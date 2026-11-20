@@ -333,8 +333,8 @@ const BUNDLE_CLOSE = [
   "  };",
   "  sap.ui.require.preload(entries);",
   "  sap.ui.require.preload({",
-  '    "z2ui5/embed/frontend/Component.js": entries["z2ui5/Component.js"],',
-  '    "z2ui5/embed/frontend/manifest.json": entries["z2ui5/manifest.json"]',
+  '    "sctau5/embed/frontend/Component.js": entries["sctau5/Component.js"],',
+'    "sctau5/embed/frontend/manifest.json": entries["sctau5/manifest.json"]',
   "  });",
   "})();",
 ];
@@ -439,7 +439,12 @@ function abapTemplateText(text) {
 
 // Embedded frontend artefacts carry the `ui5f` segment (UI5 frontend); plain
 // ABAP artefacts use `ui5` (/sct/au5_cl_ui5_view_builder).
-const CLASS_NAME_PREFIX = "#sct#au5_cl_ui5f_";
+const CLASS_NAME_PREFIX = "/sct/au5_cl_ui5f_";
+
+// abapGit file name: namespace slashes become '#'
+function abapGitFileName(className) {
+  return className.toLowerCase().replace(/\//g, "#");
+}
 
 // ABAP object names are capped at 30 characters, but a generated name must
 // survive the rename workflow (.github/workflows/build-rename.yaml), which
@@ -819,7 +824,7 @@ async function main() {
 
       const targetFilePath = path.join(
         targetDir,
-        `${className.toLowerCase()}.clas.abap`,
+        `${abapGitFileName(className)}.clas.abap`,
       );
       emit(targetFilePath, abapClassContent);
 
@@ -829,7 +834,7 @@ async function main() {
       );
       const xmlFilePath = path.join(
         targetDir,
-        `${className.toLowerCase()}.clas.xml`,
+        `${abapGitFileName(className)}.clas.xml`,
       );
       emit(xmlFilePath, `\uFEFF${xmlContent}`);
 
@@ -838,7 +843,7 @@ async function main() {
       // deferred files of devtools/ go into the devtools bundle.
       if (relPath !== "index.html") {
         (isDeferredDevtools(relPath) ? devtoolsEntries : preloadEntries).push({
-          urlPath: `z2ui5/${relPath}`,
+          urlPath: `sctau5/${relPath}`,
           className: className.toLowerCase(),
           isJs: file.endsWith(".js"),
           // what the class returns at run time - the preload's
@@ -890,7 +895,7 @@ async function main() {
     );
     emit(
       path.join(targetDir, "#sct#au5_cl_ui5f_preload.clas.xml"),
-      `\uFEFF${xmlTemplate("#sct#au5_cl_ui5f_preload", "abap2UI5 - preload mapping")}`,
+      `\uFEFF${xmlTemplate("/sct/au5_cl_ui5f_preload", "abap2UI5 - preload mapping")}`,
     );
 
     // Every guard has passed and every byte is in hand - only now is the
