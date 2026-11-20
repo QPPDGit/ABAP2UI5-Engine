@@ -311,7 +311,7 @@ const SCRIPT_CLOSE = [
 ];
 
 // The lines around the same entries in the frontend BUNDLE - the script a
-// GET of the node with ?z2ui5-bundle answers with (z2ui5_cl_ui5_http_handler
+// GET of the node with ?z2ui5-bundle answers with (/sct/au5_cl_ui5_http_handler
 // =>_http_get_bundle), for a page that embeds the component. Only the
 // registration: that page is running already, so nothing is started here.
 //
@@ -438,8 +438,8 @@ function abapTemplateText(text) {
 }
 
 // Embedded frontend artefacts carry the `ui5f` segment (UI5 frontend); plain
-// ABAP artefacts use `ui5` (z2ui5_cl_ui5_view_builder).
-const CLASS_NAME_PREFIX = "z2ui5_cl_ui5f_";
+// ABAP artefacts use `ui5` (/sct/au5_cl_ui5_view_builder).
+const CLASS_NAME_PREFIX = "#sct#au5_cl_ui5f_";
 
 // ABAP object names are capped at 30 characters, but a generated name must
 // survive the rename workflow (.github/workflows/build-rename.yaml), which
@@ -447,7 +447,7 @@ const CLASS_NAME_PREFIX = "z2ui5_cl_ui5f_";
 // budget here is 25, not 30 - that is what keeps
 // .github/abaplint/rename.jsonc down to a single catch-all pattern with no
 // per-class truncation entries.
-const MAX_CLASS_NAME_LENGTH = 25;
+const MAX_CLASS_NAME_LENGTH = 30;
 
 // Short stems for the frontend files whose basename does not fit into
 // MAX_CLASS_NAME_LENGTH, keyed by path relative to app/webapp. Curated instead
@@ -513,10 +513,10 @@ function generateClassName(filePath) {
   return className;
 }
 
-// Builds the generated z2ui5_cl_ui5f_preload class. Its get( ) returns the
+// Builds the generated /sct/au5_cl_ui5f_preload class. Its get( ) returns the
 // complete text of the GET shell's one inline <script> - onInitComponent and
 // the sap.ui.require.preload entries for every embedded frontend file - so
-// the preload list z2ui5_cl_ui5_http_handler=>_http_get embeds can never run
+// the preload list /sct/au5_cl_ui5_http_handler=>_http_get embeds can never run
 // out of sync with the files in app/webapp. The text is fixed per build, and
 // that is what the two constants rest on: both are one SHA-256 digest of it,
 // taken here once (inlineScript is its JavaScript twin).
@@ -580,7 +580,7 @@ function buildPreloadClass(
 * and run 'npm run app2abap' to regenerate; the check_app2abap CI gate
 * fails any manual edit here.
 * =====================================================================
-CLASS z2ui5_cl_ui5f_preload DEFINITION
+CLASS /sct/au5_cl_ui5f_preload DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -589,11 +589,11 @@ CLASS z2ui5_cl_ui5f_preload DEFINITION
 
     " a digest of the script get( ) returns - every embedded frontend source
     " and the code around them - fixed at generation time. Part of the GET
-    " shell's ETag (z2ui5_cl_ui5_http_handler=>_get_etag)
+    " shell's ETag (/sct/au5_cl_ui5_http_handler=>_get_etag)
     CONSTANTS build_hash TYPE string VALUE '${buildHash}'.
 
     " the same digest as a CSP hash source, without the quotes around it:
-    " z2ui5_cl_ui5_http_handler=>_http_get lists it in the policy's
+    " /sct/au5_cl_ui5_http_handler=>_http_get lists it in the policy's
     " script-src, so this one inline script runs without 'unsafe-inline'.
     " It is the SHA-256 of get( ) byte for byte - a script that differs by one
     " character does not run at all, which the browser e2e legs would show
@@ -601,7 +601,7 @@ CLASS z2ui5_cl_ui5f_preload DEFINITION
 
     " a digest of the devtools bundle get_devtools( ) returns - the files
     " of the developer tools the shell does not carry. The ETag of that
-    " bundle carries it (z2ui5_cl_ui5_http_handler=>_http_get_devtools):
+    " bundle carries it (/sct/au5_cl_ui5_http_handler=>_http_get_devtools):
     " build_hash is taken over the shell's script alone and does not change
     " with them
     CONSTANTS devtools_hash TYPE string VALUE '${devtoolsHash}'.
@@ -612,7 +612,7 @@ CLASS z2ui5_cl_ui5f_preload DEFINITION
 
     " the same entries as a script of its own, for a page that embeds the
     " component: sap.ui.require.preload( ) and nothing else - no function
-    " around it, no start (z2ui5_cl_ui5_http_handler=>_http_get_bundle)
+    " around it, no start (/sct/au5_cl_ui5_http_handler=>_http_get_bundle)
     CLASS-METHODS get_bundle
       RETURNING
         VALUE(result) TYPE string.
@@ -620,7 +620,7 @@ CLASS z2ui5_cl_ui5f_preload DEFINITION
     " the developer tools as a script of the same shape: the dialog, its
     " fragment, the inspectors - everything under devtools/ the shell does
     " not carry (tools/app2abap/trans2abap.js, DEVTOOLS_EAGER). Served on
-    " ?z2ui5-bundle=devtools (z2ui5_cl_ui5_http_handler=>_http_get_devtools)
+    " ?z2ui5-bundle=devtools (/sct/au5_cl_ui5_http_handler=>_http_get_devtools)
     " and loaded by z2ui5/devtools/DevTools.js when the tools are opened
     CLASS-METHODS get_devtools
       RETURNING
@@ -649,7 +649,7 @@ CLASS z2ui5_cl_ui5f_preload DEFINITION
 ENDCLASS.
 
 
-CLASS z2ui5_cl_ui5f_preload IMPLEMENTATION.
+CLASS /sct/au5_cl_ui5f_preload IMPLEMENTATION.
 
   METHOD get.
 
@@ -685,7 +685,7 @@ CLASS z2ui5_cl_ui5f_preload IMPLEMENTATION.
 
     " Every non-.js resource in get( ) is embedded as a JavaScript
     " single-quoted string literal, inside the single <script> block that
-    " defines onInitComponent (z2ui5_cl_ui5_http_handler=>_http_get). Its content
+    " defines onInitComponent (/sct/au5_cl_ui5_http_handler=>_http_get). Its content
     " is arbitrary text and does carry apostrophes - a UI5 expression binding
     " in a fragment (title="{= \${/appName} ? 'a' : 'b' }") writes them. An
     " unescaped one ends the literal early, which is a syntax error for the whole block: the browser
@@ -706,11 +706,11 @@ CLASS z2ui5_cl_ui5f_preload IMPLEMENTATION.
     " char constants come from the context class - the one place allowed to
     " reference cl_abap_char_utilities (see "Utilities" in AGENTS.md)
     result = replace( val  = result
-                      sub  = z2ui5_cl_ui5_util_context=>cv_char_util_cr_lf(1)
+                      sub  = /sct/au5_cl_ui5_util_context=>cv_char_util_cr_lf(1)
                       with = \`\\r\`
                       occ  = 0 ).
     result = replace( val  = result
-                      sub  = z2ui5_cl_ui5_util_context=>cv_char_util_newline
+                      sub  = /sct/au5_cl_ui5_util_context=>cv_char_util_newline
                       with = \`\\n\`
                       occ  = 0 ).
     " the HTML tokenizer runs BEFORE the JavaScript parser and ends the
@@ -774,7 +774,7 @@ async function main() {
     const jsSources = new Map();
 
     // Class names ignore folders (cc/Foo.js and Foo.js would both map to
-    // z2ui5_cl_ui5f_foo_js), so duplicate basenames silently overwrite
+    // /sct/au5_cl_ui5f_foo_js), so duplicate basenames silently overwrite
     // each other. Fail fast instead.
     const seenClassNames = new Map();
     const classNameByFile = new Map();
@@ -879,7 +879,7 @@ async function main() {
       .digest("hex")
       .slice(0, 16);
     emit(
-      path.join(targetDir, "z2ui5_cl_ui5f_preload.clas.abap"),
+      path.join(targetDir, "#sct#au5_cl_ui5f_preload.clas.abap"),
       buildPreloadClass(
         preloadEntries,
         devtoolsEntries,
@@ -889,8 +889,8 @@ async function main() {
       ),
     );
     emit(
-      path.join(targetDir, "z2ui5_cl_ui5f_preload.clas.xml"),
-      `\uFEFF${xmlTemplate("z2ui5_cl_ui5f_preload", "abap2UI5 - preload mapping")}`,
+      path.join(targetDir, "#sct#au5_cl_ui5f_preload.clas.xml"),
+      `\uFEFF${xmlTemplate("#sct#au5_cl_ui5f_preload", "abap2UI5 - preload mapping")}`,
     );
 
     // Every guard has passed and every byte is in hand - only now is the
