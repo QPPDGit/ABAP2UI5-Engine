@@ -60,8 +60,6 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `      else BusyIndicator.hide();` && |\n| &&
              `    }` && |\n| &&
              `` && |\n| &&
-             `    const WINDOW_EVENT = "___ZZZ_WIN";` && |\n| &&
-             `` && |\n| &&
              `    const View1Controller = Controller.extend("sctau5.controller.View1", {` && |\n| &&
              `      onAfterRendering() {` && |\n| &&
              `        if (this.ctx.state.oResponse) this._processAfterRendering();` && |\n| &&
@@ -86,7 +84,6 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `            }` && |\n| &&
              `` && |\n| &&
              `            state.oQueuedEvent = null;` && |\n| &&
-             `            state.oQueuedWindow = null;` && |\n| &&
              `            state.renderedApp = oResponse.APP;` && |\n| &&
              `          }` && |\n| &&
              `` && |\n| &&
@@ -125,7 +122,6 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `            id: oResponse.ID,` && |\n| &&
              `          });` && |\n| &&
              `          Lib.runCallbacks(this.ctx.state.onAfterRendering);` && |\n| &&
-             `          Lib.runCallbacks(this.ctx.state.onRoundtripEnd);` && |\n| &&
              `        } catch (e) {` && |\n| &&
              `          Lib.logError("_processAfterRendering: unexpected error", e);` && |\n| &&
              `` && |\n| &&
@@ -154,15 +150,6 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `            await this.ctx.state.mainTransition;` && |\n| &&
              `          }` && |\n| &&
              `          if (!replaced) await this._runPendingCustomJs(oResponse);` && |\n| &&
-             `` && |\n| &&
-             `          if (` && |\n| &&
-             `            superseded &&` && |\n| &&
-             `            !replaced &&` && |\n| &&
-             `            this.ctx.server.restoreSeq === this.ctx.server.requestSeq &&` && |\n| &&
-             `            seq !== this.ctx.server.requestSeq` && |\n| &&
-             `          ) {` && |\n| &&
-             `            Lib.cancelPendingTimers(this.ctx);` && |\n| &&
-             `          }` && |\n| &&
              `          if (!superseded) {` && |\n| &&
              `            this._dispatchQueuedEvent();` && |\n| &&
              `` && |\n| &&
@@ -205,16 +192,13 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `      },` && |\n| &&
              `` && |\n| &&
              `      _dispatchQueuedEvent() {` && |\n| &&
-             `        const state = this.ctx.state;` && |\n| &&
-             `        for (const slot of ["oQueuedEvent", "oQueuedWindow"]) {` && |\n| &&
-             `          const queued = state[slot];` && |\n| &&
-             `          if (!queued) continue;` && |\n| &&
-             `          state[slot] = null;` && |\n| &&
-             `          if (!Lib.isControllerAlive(queued.controller)) continue;` && |\n| &&
-             `          const key = ViewSlots.keyOfController(queued.controller);` && |\n| &&
-             `          if (ViewSlots.getView(this.ctx, key) !== queued.view) continue;` && |\n| &&
-             `          queued.controller.eB(...queued.args);` && |\n| &&
-             `        }` && |\n| &&
+             `        const queued = this.ctx.state.oQueuedEvent;` && |\n| &&
+             `        if (!queued) return;` && |\n| &&
+             `        this.ctx.state.oQueuedEvent = null;` && |\n| &&
+             `        if (!Lib.isControllerAlive(queued.controller)) return;` && |\n| &&
+             `        const key = ViewSlots.keyOfController(queued.controller);` && |\n| &&
+             `        if (ViewSlots.getView(this.ctx, key) !== queued.view) return;` && |\n| &&
+             `        queued.controller.eB(...queued.args);` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&
              `      async _runPendingCustomJs(oResponse) {` && |\n| &&
@@ -224,7 +208,7 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `        if (!Lib.isControllerAlive(this)) return;` && |\n| &&
              `        for (const item of customJs) {` && |\n| &&
              `          const result = FrontendAction.runCustom(item, this);` && |\n| &&
-             `          if (typeof result?.then === "function") {` && |\n| &&
+             `          if (result && typeof result.then === "function") {` && |\n| &&
              `            try {` && |\n| &&
              `              await result;` && |\n| &&
              `            } catch (e) {` && |\n| &&
@@ -324,20 +308,14 @@ CLASS /sct/au5_cl_ui5f_view1_js IMPLEMENTATION.
              `` && |\n| &&
              `        if (this.ctx.state.isBusy) {` && |\n| &&
              `          if (queueLast) {` && |\n| &&
-             `            const queuedArgs = Lib.normalizeEventArgs(args);` && |\n| &&
-             `` && |\n| &&
-             `            const slot =` && |\n| &&
-             `              queuedArgs[0]?.[0] === WINDOW_EVENT` && |\n| &&
-             `                ? "oQueuedWindow"` && |\n| &&
-             `                : "oQueuedEvent";` && |\n| &&
-             `            this.ctx.state[slot] = {` && |\n| &&
+             `            this.ctx.state.oQueuedEvent = {` && |\n| &&
              `              controller: this,` && |\n| &&
              `` && |\n| &&
              `              view: ViewSlots.getView(` && |\n| &&
              `                this.ctx,` && |\n| &&
              `                ViewSlots.keyOfController(this),` && |\n| &&
              `              ),` && |\n| &&
-             `              args: queuedArgs,` && |\n| &&
+             `              args: Lib.normalizeEventArgs(args),` && |\n| &&
              `            };` && |\n| &&
              `          }` && |\n| &&
              `          if (!noBusy) showBusy(this.ctx, 0);` && |\n| &&

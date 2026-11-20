@@ -37,7 +37,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_true(
         /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = `/SCT/AU5_CL_UI5_APP_HI_WORLD`
-                                                               intf  = `/SCT/AU5_IF_APP` ) ).
+                                                               intf     = `/SCT/AU5_IF_APP` ) ).
 
   ENDMETHOD.
 
@@ -46,7 +46,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " the interface name is normalised the way a class name is
     cl_abap_unit_assert=>assert_true(
         /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = `/SCT/AU5_CL_UI5_APP_HI_WORLD`
-                                                               intf  = `/sct/au5_if_app` ) ).
+                                                               intf     = `/sct/au5_if_app` ) ).
 
   ENDMETHOD.
 
@@ -55,7 +55,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " exists, is a class, implements something else entirely
     cl_abap_unit_assert=>assert_false(
         /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = `/SCT/AU5_CL_UI5_UTIL_CONTEXT`
-                                                               intf  = `/SCT/AU5_IF_APP` ) ).
+                                                               intf     = `/SCT/AU5_IF_APP` ) ).
 
   ENDMETHOD.
 
@@ -63,7 +63,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_false(
         /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = `ZCL_THIS_CLASS_DOES_NOT_EXIST`
-                                                               intf  = `/SCT/AU5_IF_APP` ) ).
+                                                               intf     = `/SCT/AU5_IF_APP` ) ).
 
   ENDMETHOD.
 
@@ -72,7 +72,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " an interface is not a class - it cannot be created, so it is no app
     cl_abap_unit_assert=>assert_false(
         /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = `/SCT/AU5_IF_APP`
-                                                               intf  = `/SCT/AU5_IF_APP` ) ).
+                                                               intf     = `/SCT/AU5_IF_APP` ) ).
 
   ENDMETHOD.
 
@@ -517,14 +517,14 @@ CLASS ltcl_string IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( exp = `abcdefg...`
                                         act = /sct/au5_cl_ui5_util_context=>c_truncate( val = `abcdefghijklmn`
-                                                                                     max = 10 ) ).
+                                                                                     max    = 10 ) ).
     cl_abap_unit_assert=>assert_equals( exp = `abcdefghij`
                                         act = /sct/au5_cl_ui5_util_context=>c_truncate( val = `abcdefghij`
-                                                                                     max = 10 ) ).
+                                                                                     max    = 10 ) ).
     " no room for the ellipsis: a plain cut
     cl_abap_unit_assert=>assert_equals( exp = `ab`
                                         act = /sct/au5_cl_ui5_util_context=>c_truncate( val = `abcdef`
-                                                                                     max = 2 ) ).
+                                                                                     max    = 2 ) ).
 
   ENDMETHOD.
 
@@ -536,9 +536,9 @@ CLASS ltcl_string IMPLEMENTATION.
                                                   allowed = `ABCDEFGHIJKLMNOPQRSTUVWXYZ_` ) ).
     " nothing to strip: the value itself
     cl_abap_unit_assert=>assert_equals( exp = `abc`
-                                        act = /sct/au5_cl_ui5_util_context=>c_filter_chars( val     = `abc`
+                                        act = /sct/au5_cl_ui5_util_context=>c_filter_chars( val  = `abc`
                                                                                          allowed = `abc` ) ).
-    cl_abap_unit_assert=>assert_initial( /sct/au5_cl_ui5_util_context=>c_filter_chars( val     = ``
+    cl_abap_unit_assert=>assert_initial( /sct/au5_cl_ui5_util_context=>c_filter_chars( val  = ``
                                                                                     allowed = `abc` ) ).
 
   ENDMETHOD.
@@ -547,11 +547,11 @@ CLASS ltcl_string IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( exp = `ZCL_X`
                                         act = /sct/au5_cl_ui5_util_context=>c_cut_at( val = `ZCL_X?a=1`
-                                                                                   sub = `?` ) ).
+                                                                                   sub    = `?` ) ).
     " sub absent: the whole value, not the empty one substring_before answers
     cl_abap_unit_assert=>assert_equals( exp = `ZCL_X`
                                         act = /sct/au5_cl_ui5_util_context=>c_cut_at( val = `ZCL_X`
-                                                                                   sub = `?` ) ).
+                                                                                   sub    = `?` ) ).
 
   ENDMETHOD.
 
@@ -921,7 +921,7 @@ CLASS ltcl_rtti IMPLEMENTATION.
     cl_abap_unit_assert=>assert_subrc( ).
     <col> = `payload-value`.
 
-    /sct/au5_cl_ui5_util_context=>xml_srtti_stringify_pair( EXPORTING data    = <tab>
+    /sct/au5_cl_ui5_util_context=>xml_srtti_stringify_pair( EXPORTING data = <tab>
                                                          IMPORTING ev_type = lv_type
                                                                    ev_data = lv_data ).
     cl_abap_unit_assert=>assert_not_initial( lv_type ).
@@ -930,7 +930,7 @@ CLASS ltcl_rtti IMPLEMENTATION.
     cl_abap_unit_assert=>assert_true( xsdbool( lv_data CS `payload-value` ) ).
 
     DATA(lr_back) = /sct/au5_cl_ui5_util_context=>xml_srtti_parse_pair( iv_type = lv_type
-                                                                     iv_data = lv_data ).
+                                                                     iv_data    = lv_data ).
     ASSIGN lr_back->* TO <back>.
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( <back> ) ).
@@ -1070,7 +1070,7 @@ CLASS ltcl_rtti IMPLEMENTATION.
     ls_flags-other  = abap_true.
 
     DATA(lt_found) = /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val = ls_flags
-                                                               prefix = `FLAG_` ).
+                                                               prefix    = `FLAG_` ).
 
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_found ) ).
@@ -1106,15 +1106,15 @@ CLASS ltcl_rtti IMPLEMENTATION.
     ls_row-element-name      = abap_true.
     ls_row-op-action-approve = abap_true.
 
-    DATA(lt_element) = /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val  = ls_row
-                                                                  prefix = `ELEMENT-` ).
+    DATA(lt_element) = /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val = ls_row
+                                                                  prefix   = `ELEMENT-` ).
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_element ) ).
     cl_abap_unit_assert=>assert_equals( exp = `NAME`
                                         act = lt_element[ 1 ] ).
 
-    DATA(lt_action) = /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val  = ls_row
-                                                                 prefix = `OP-ACTION-` ).
+    DATA(lt_action) = /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val = ls_row
+                                                                 prefix   = `OP-ACTION-` ).
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_action ) ).
     cl_abap_unit_assert=>assert_equals( exp = `APPROVE`
@@ -1122,10 +1122,10 @@ CLASS ltcl_rtti IMPLEMENTATION.
 
     " a path that does not exist, or ends in a non-structure, finds nothing
     cl_abap_unit_assert=>assert_initial(
-        /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val    = ls_row
+        /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val = ls_row
                                                      prefix = `NOPE-` ) ).
     cl_abap_unit_assert=>assert_initial(
-        /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val    = ls_row
+        /sct/au5_cl_ui5_util_context=>scan_flag_prefix( val = ls_row
                                                      prefix = `PID-` ) ).
 
   ENDMETHOD.
@@ -1153,7 +1153,7 @@ CLASS ltcl_rtti IMPLEMENTATION.
     DATA lt_names TYPE string_table.
     lt_names = VALUE #( ( `a` ) ).
 
-    DATA(ls_type) = /sct/au5_cl_ui5_util_context=>rtti_create_sel_tab_type( ir_tab       = REF #( lt_names )
+    DATA(ls_type) = /sct/au5_cl_ui5_util_context=>rtti_create_sel_tab_type( ir_tab    = REF #( lt_names )
                                                                         add_sel_field = abap_true ).
 
     cl_abap_unit_assert=>assert_equals( exp = abap_true
@@ -1194,7 +1194,7 @@ CLASS ltcl_rtti IMPLEMENTATION.
       END OF ty_s_sel.
     DATA lt_sel TYPE STANDARD TABLE OF ty_s_sel WITH EMPTY KEY.
 
-    DATA(ls_type) = /sct/au5_cl_ui5_util_context=>rtti_create_sel_tab_type( ir_tab       = REF #( lt_sel )
+    DATA(ls_type) = /sct/au5_cl_ui5_util_context=>rtti_create_sel_tab_type( ir_tab    = REF #( lt_sel )
                                                                         add_sel_field = abap_true ).
 
     cl_abap_unit_assert=>assert_equals( exp = abap_false
@@ -1289,7 +1289,7 @@ CLASS ltcl_itab IMPLEMENTATION.
                        ( name = `Alan` children = VALUE #( ( `Wilmslow` ) ) ) ).
 
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = `Alan`
-                                                CHANGING  tab    = lt_deep ).
+                                                CHANGING  tab       = lt_deep ).
 
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_deep ) ).
@@ -1313,7 +1313,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     DATA(lt_row) = get_rows( ).
 
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = `London`
-                                                CHANGING  tab    = lt_row ).
+                                                CHANGING  tab       = lt_row ).
 
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_row ) ).
@@ -1326,7 +1326,7 @@ CLASS ltcl_itab IMPLEMENTATION.
 
     DATA(lt_row) = get_rows( ).
 
-    /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val      = `ada`
+    /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val   = `ada`
                                                           ignore_case = abap_true
                                                 CHANGING  tab         = lt_row ).
 
@@ -1347,8 +1347,8 @@ CLASS ltcl_itab IMPLEMENTATION.
     APPEND `NAME` TO lt_fields.
 
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = `London`
-                                                          fields = lt_fields
-                                                CHANGING  tab    = lt_row ).
+                                                          fields    = lt_fields
+                                                CHANGING  tab       = lt_row ).
 
     cl_abap_unit_assert=>assert_initial( lt_row ).
 
@@ -1359,7 +1359,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     DATA(lt_row) = get_rows( ).
 
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = `Nobody`
-                                                CHANGING  tab    = lt_row ).
+                                                CHANGING  tab       = lt_row ).
 
     cl_abap_unit_assert=>assert_initial( lt_row ).
 
@@ -1380,7 +1380,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     lt_deep = VALUE #( ( children = VALUE #( ( `London` ) ) )
                        ( children = VALUE #( ) ) ).
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = ``
-                                                CHANGING  tab    = lt_deep ).
+                                                CHANGING  tab       = lt_deep ).
     cl_abap_unit_assert=>assert_equals( exp = 2
                                         act = lines( lt_deep ) ).
 
@@ -1388,7 +1388,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     " component the rows do not have: still no filter
     DATA(lt_row) = get_rows( ).
     APPEND `NO_SUCH_FIELD` TO lt_fields.
-    /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val      = ``
+    /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val   = ``
                                                           fields      = lt_fields
                                                           ignore_case = abap_true
                                                 CHANGING  tab         = lt_row ).
@@ -1399,7 +1399,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     DATA lv_blank TYPE c LENGTH 10.
     lt_row = get_rows( ).
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = lv_blank
-                                                CHANGING  tab    = lt_row ).
+                                                CHANGING  tab       = lt_row ).
     cl_abap_unit_assert=>assert_equals( exp = 3
                                         act = lines( lt_row ) ).
 
@@ -1414,7 +1414,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     lt_str = VALUE #( ( `London` ) ( `Wilmslow` ) ( `New York` ) ).
 
     /sct/au5_cl_ui5_util_context=>itab_filter_by_val( EXPORTING val = `London`
-                                                CHANGING  tab    = lt_str ).
+                                                CHANGING  tab       = lt_str ).
 
     cl_abap_unit_assert=>assert_equals( exp = 1
                                         act = lines( lt_str ) ).
@@ -1438,7 +1438,7 @@ CLASS ltcl_itab IMPLEMENTATION.
     DATA(lt_row) = get_rows( ).
 
     /sct/au5_cl_ui5_util_context=>itab_corresponding( EXPORTING val = lt_row
-                                                CHANGING  tab    = lt_target ).
+                                                CHANGING  tab       = lt_target ).
 
     cl_abap_unit_assert=>assert_equals( exp = 3
                                         act = lines( lt_target ) ).
@@ -2130,11 +2130,11 @@ CLASS ltcl_msg_rap IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( exp = `three`
                                         act = /sct/au5_cl_ui5_util_context=>get_comp_str( val = ls_nested
-                                                                                      comp = `C` ) ).
+                                                                                      comp    = `C` ) ).
     cl_abap_unit_assert=>assert_initial( /sct/au5_cl_ui5_util_context=>get_comp_str( val = ls_nested
-                                                                                comp  = `INNER` ) ).
+                                                                                comp     = `INNER` ) ).
     cl_abap_unit_assert=>assert_initial( /sct/au5_cl_ui5_util_context=>get_comp_str( val = ls_nested
-                                                                                comp  = `NO_SUCH` ) ).
+                                                                                comp     = `NO_SUCH` ) ).
 
   ENDMETHOD.
 
@@ -2471,7 +2471,7 @@ CLASS ltcl_time IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = 250
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20261003101500.1000000`
-                                                                 time_to   = `20261003101500.3500000` ) ).
+                                                                 time_to      = `20261003101500.3500000` ) ).
 
   ENDMETHOD.
 
@@ -2482,11 +2482,11 @@ CLASS ltcl_time IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = 200
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20261003101559.9000000`
-                                                                 time_to   = `20261003101600.1000000` ) ).
+                                                                 time_to      = `20261003101600.1000000` ) ).
     cl_abap_unit_assert=>assert_equals(
         exp = 3600000
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20261003095959.0000000`
-                                                                 time_to   = `20261003105959.0000000` ) ).
+                                                                 time_to      = `20261003105959.0000000` ) ).
 
   ENDMETHOD.
 
@@ -2496,7 +2496,7 @@ CLASS ltcl_time IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = 1500
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20261231235959.5000000`
-                                                                 time_to   = `20270101000001.0000000` ) ).
+                                                                 time_to      = `20270101000001.0000000` ) ).
 
   ENDMETHOD.
 
@@ -2505,7 +2505,7 @@ CLASS ltcl_time IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = -1000
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20261003101501.0000000`
-                                                                 time_to   = `20261003101500.0000000` ) ).
+                                                                 time_to      = `20261003101500.0000000` ) ).
 
   ENDMETHOD.
 
@@ -2516,7 +2516,7 @@ CLASS ltcl_time IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = 0
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = lv_initial
-                                                                 time_to   = `20261003101500.0000000` ) ).
+                                                                 time_to      = `20261003101500.0000000` ) ).
 
   ENDMETHOD.
 
@@ -2578,11 +2578,11 @@ CLASS ltcl_edge IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = `ab==`
         act = /sct/au5_cl_ui5_util_context=>url_param_get( val = `token`
-                                                        url = `?token=ab==&x=1` ) ).
+                                                        url    = `?token=ab==&x=1` ) ).
     cl_abap_unit_assert=>assert_equals(
         exp = `1`
         act = /sct/au5_cl_ui5_util_context=>url_param_get( val = `x`
-                                                        url = `?token=ab==&x=1` ) ).
+                                                        url    = `?token=ab==&x=1` ) ).
 
   ENDMETHOD.
 
@@ -2594,13 +2594,13 @@ CLASS ltcl_edge IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = ``
         act = /sct/au5_cl_ui5_util_context=>url_param_get( val = `a`
-                                                        url = `` ) ).
+                                                        url    = `` ) ).
     " a name that is not there - and the empty name, which matches no
     " parameter either
     cl_abap_unit_assert=>assert_equals(
         exp = ``
         act = /sct/au5_cl_ui5_util_context=>url_param_get( val = ``
-                                                        url = `?=x&a=1` ) ).
+                                                        url    = `?=x&a=1` ) ).
 
   ENDMETHOD.
 
@@ -2892,11 +2892,11 @@ CLASS ltcl_edge IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = 2 * 86400000
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20240228120000.0000000`
-                                                                 time_to   = `20240301120000.0000000` ) ).
+                                                                 time_to      = `20240301120000.0000000` ) ).
     cl_abap_unit_assert=>assert_equals(
         exp = 86400000
         act = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = `20250228120000.0000000`
-                                                                 time_to   = `20250301120000.0000000` ) ).
+                                                                 time_to      = `20250301120000.0000000` ) ).
 
   ENDMETHOD.
 
@@ -3078,8 +3078,8 @@ CLASS ltcl_coverage IMPLEMENTATION.
 
     " the recursion guard: past 16 levels the expansion refuses
     TRY.
-        /sct/au5_cl_ui5_util_context=>expand_components( val   = lt_raw
-                                                      depth = 17 ).
+        /sct/au5_cl_ui5_util_context=>expand_components( val = lt_raw
+                                                      depth  = 17 ).
         cl_abap_unit_assert=>fail( `the depth guard must raise` ).
       CATCH /sct/au5_cx_ui5_util_error ##NO_HANDLER.
     ENDTRY.

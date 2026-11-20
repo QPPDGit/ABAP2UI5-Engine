@@ -190,7 +190,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " an expired bookmark: the error goes out with its chain instead of a
     " toast and a fresh app that hide what broke
     DATA(lv_id) = /sct/au5_cl_ui5_util_context=>uuid_get_c32( ).
-    /sct/au5_cl_ui5_srv_draft=>get_instance( )->create( draft     = VALUE #( id = lv_id )
+    /sct/au5_cl_ui5_srv_draft=>get_instance( )->create( draft  = VALUE #( id = lv_id )
                                                      model_xml = `<draft/>` ).
 
     lv_payload = `{"value":{"S_FRONT":{"ORIGIN":"O","PATHNAME":"/p","SEARCH":"?app_start=/SCT/AU5_CL_UI5_APP_HI_WORLD"}}}`.
@@ -608,7 +608,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " the called app opens a popup of its own - it replaces the queued
     " teardown instead of standing next to it
     NEW /sct/au5_cl_ui5_frontend( lo_result )->slot_display( slot = /sct/au5_if_client=>cs_view-popup
-                                                          xml  = `<Dialog id="next"/>` ).
+                                                          xml     = `<Dialog id="next"/>` ).
     lv_actions = ``.
     LOOP AT lo_result->ms_next-t_action_front INTO ls_front.
       lv_actions = |{ lv_actions }{ ls_front-slot }\|{ ls_front-method };|.

@@ -605,8 +605,8 @@ CLASS /sct/au5_cl_ui5_client IMPLEMENTATION.
     " delegate instead of repeating the _bind( ) call, same reason as
     " _bind_edit right below: one behaviour, so the two spellings can never
     " drift apart. Deliberately no further parameters - see the interface.
-    result = /sct/au5_if_client~_bind( val  = val
-                                    path = abap_true ).
+    result = /sct/au5_if_client~_bind( val = val
+                                    path   = abap_true ).
 
   ENDMETHOD.
 
@@ -617,7 +617,7 @@ CLASS /sct/au5_cl_ui5_client IMPLEMENTATION.
     " both can never drift apart. custom_mapper_back / custom_filter_back exist
     " only on this signature and are deliberately no longer evaluated (_bind
     " has no counterpart for them).
-    result = /sct/au5_if_client~_bind( val                  = val
+    result = /sct/au5_if_client~_bind( val               = val
                                     path                 = path
                                     custom_mapper        = custom_mapper
                                     custom_filter        = custom_filter

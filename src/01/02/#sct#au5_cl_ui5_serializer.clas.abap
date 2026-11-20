@@ -47,7 +47,7 @@ CLASS /sct/au5_cl_ui5_serializer IMPLEMENTATION.
   METHOD model_for.
 
     result = NEW /sct/au5_cl_ui5_srv_model( attri = container->mt_attri
-                                         app   = container->mo_app ).
+                                         app      = container->mo_app ).
 
   ENDMETHOD.
 
@@ -71,7 +71,7 @@ CLASS /sct/au5_cl_ui5_serializer IMPLEMENTATION.
     DATA lo_cont TYPE REF TO /sct/au5_cl_ui5_app_cont.
 
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = val
-                                          IMPORTING any = lo_cont ).
+                                          IMPORTING any    = lo_cont ).
     result = lo_cont.
 
   ENDMETHOD.

@@ -59,11 +59,6 @@ CLASS /sct/au5_cl_ui5f_browser_js IMPLEMENTATION.
              `      );` && |\n| &&
              `    }` && |\n| &&
              `` && |\n| &&
-             `    const ACTIVE_DATA_MIME =` && |\n| &&
-             `      /^data:\s*(text\/html|application\/xhtml|text\/xml|image\/svg)/i;` && |\n| &&
-             `` && |\n| &&
-             `    const UNSAFE_FILENAME_CHARS = /[\\/:*?"<>|\x00-\x1f]/g;` && |\n| &&
-             `` && |\n| &&
              `    function evDownloadB64File(oController, args) {` && |\n| &&
              `      if (!Lib.isSafeDownloadURL(args[1])) {` && |\n| &&
              `        Lib.logError("DOWNLOAD_B64_FILE: blocked unsafe URL");` && |\n| &&
@@ -71,14 +66,18 @@ CLASS /sct/au5_cl_ui5f_browser_js IMPLEMENTATION.
              `      }` && |\n| &&
              `` && |\n| &&
              `      const href = new URL(args[1], window.location.origin).href;` && |\n| &&
-             `      if (ACTIVE_DATA_MIME.test(href)) {` && |\n| &&
+             `      if (` && |\n| &&
+             `        /^data:\s*(text\/html|application\/xhtml|text\/xml|image\/svg)/i.test(` && |\n| &&
+             `          href,` && |\n| &&
+             `        )` && |\n| &&
+             `      ) {` && |\n| &&
              `        Lib.logError("DOWNLOAD_B64_FILE: blocked active data: MIME type");` && |\n| &&
              `        return;` && |\n| &&
              `      }` && |\n| &&
              `      const a = document.createElement("a");` && |\n| &&
              `      a.href = args[1];` && |\n| &&
              `` && |\n| &&
-             `      a.download = String(args[2] || "").replace(UNSAFE_FILENAME_CHARS, "_");` && |\n| &&
+             `      a.download = String(args[2] || "").replace(/[\\/:*?"<>|\x00-\x1f]/g, "_");` && |\n| &&
              `` && |\n| &&
              `      document.body.appendChild(a);` && |\n| &&
              `      a.click();` && |\n| &&

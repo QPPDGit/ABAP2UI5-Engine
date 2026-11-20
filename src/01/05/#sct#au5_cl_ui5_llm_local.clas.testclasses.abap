@@ -89,8 +89,8 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD test_fallback.
 
     DATA li_llm TYPE REF TO /sct/au5_if_ui5_llm.
-    li_llm = NEW /sct/au5_cl_ui5_llm_local( t_rule   = rules( )
-                                         fallback = `I do not know.` ).
+    li_llm = NEW /sct/au5_cl_ui5_llm_local( t_rule = rules( )
+                                         fallback  = `I do not know.` ).
 
     DATA(ls_result) = li_llm->chat( ask( `What is the weather?` ) ).
 

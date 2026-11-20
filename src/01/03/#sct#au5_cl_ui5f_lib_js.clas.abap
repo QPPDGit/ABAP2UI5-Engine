@@ -245,42 +245,12 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `      return () => {};` && |\n| &&
              `    }` && |\n| &&
              `    const once = () => {` && |\n| &&
-             `      unregisterCallback(ctx, "onRoundtripEnd", once);` && |\n| &&
+             `      unregisterCallback(ctx, "onAfterRendering", once);` && |\n| &&
              `      if (isDestroyed(owner)) return;` && |\n| &&
              `      fn();` && |\n| &&
              `    };` && |\n| &&
-             `    registerCallback(ctx, "onRoundtripEnd", once);` && |\n| &&
-             `    return () => unregisterCallback(ctx, "onRoundtripEnd", once);` && |\n| &&
-             `  }` && |\n| &&
-             `` && |\n| &&
-             `  function withinFileSize(files, maxMegabytes, onTooBig) {` && |\n| &&
-             `    const list = Array.from(files || []);` && |\n| &&
-             `    const limit = Number(maxMegabytes) * 1024 * 1024;` && |\n| &&
-             `    if (!(limit > 0)) return list;` && |\n| &&
-             `    return list.filter((file) => {` && |\n| &&
-             `      if (!(Number(file?.size) > limit)) return true;` && |\n| &&
-             `      logError(` && |\n| &&
-             `        ``file '${file?.name ?? ""}' is over the limit of ${maxMegabytes} MB - not read``,` && |\n| &&
-             `      );` && |\n| &&
-             `      try {` && |\n| &&
-             `        onTooBig?.(file);` && |\n| &&
-             `      } catch (e) {` && |\n| &&
-             `        logError("withinFileSize: the size handler failed", e);` && |\n| &&
-             `      }` && |\n| &&
-             `      return false;` && |\n| &&
-             `    });` && |\n| &&
-             `  }` && |\n| &&
-             `` && |\n| &&
-             `  function dispatchWhenIdle(oController, args) {` && |\n| &&
-             `    const fire = () => {` && |\n| &&
-             `      if (!isControllerAlive(oController)) return;` && |\n| &&
-             `      if (oController.ctx?.state?.isBusy) {` && |\n| &&
-             `        afterRoundtrip(oController, () => setTimeout(fire, 0));` && |\n| &&
-             `        return;` && |\n| &&
-             `      }` && |\n| &&
-             `      oController.eB(...args);` && |\n| &&
-             `    };` && |\n| &&
-             `    fire();` && |\n| &&
+             `    registerCallback(ctx, "onAfterRendering", once);` && |\n| &&
+             `    return () => unregisterCallback(ctx, "onAfterRendering", once);` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  function runCallbacks(callbacks, ...args) {` && |\n| &&
@@ -354,15 +324,13 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `` && |\n| &&
              `  function copyToClipboard(textToCopy) {` && |\n| &&
              `    if (navigator.clipboard?.writeText) {` && |\n| &&
-             `      return navigator.clipboard.writeText(textToCopy).then(` && |\n| &&
-             `        () => true,` && |\n| &&
-             `        (err) => {` && |\n| &&
-             `          logError("Clipboard: writeText failed, falling back", err);` && |\n| &&
-             `          return copyToClipboardFallback(textToCopy);` && |\n| &&
-             `        },` && |\n| &&
-             `      );` && |\n| &&
+             `      navigator.clipboard.writeText(textToCopy).catch((err) => {` && |\n| &&
+             `        logError("Clipboard: writeText failed, falling back", err);` && |\n| &&
+             `        copyToClipboardFallback(textToCopy);` && |\n| &&
+             `      });` && |\n| &&
+             `      return;` && |\n| &&
              `    }` && |\n| &&
-             `    return Promise.resolve(copyToClipboardFallback(textToCopy));` && |\n| &&
+             `    copyToClipboardFallback(textToCopy);` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  function copyToClipboardFallback(textToCopy) {` && |\n| &&
@@ -375,12 +343,11 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `    document.body.appendChild(textarea);` && |\n| &&
              `    textarea.select();` && |\n| &&
              `    try {` && |\n| &&
-             `      if (document.execCommand("copy")) return true;` && |\n| &&
-             `      logError("Clipboard: execCommand('copy') returned false");` && |\n| &&
-             `      return false;` && |\n| &&
+             `      if (!document.execCommand("copy")) {` && |\n| &&
+             `        logError("Clipboard: execCommand('copy') returned false");` && |\n| &&
+             `      }` && |\n| &&
              `    } catch (err) {` && |\n| &&
              `      logError("Clipboard: execCommand('copy') threw", err);` && |\n| &&
-             `      return false;` && |\n| &&
              `    } finally {` && |\n| &&
              `      document.body.removeChild(textarea);` && |\n| &&
              `    }` && |\n| &&
@@ -424,8 +391,7 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `      const start = el.selectionStart;` && |\n| &&
              `      const end = el.selectionEnd;` && |\n| &&
              `      if (start == null || end == null) return null;` && |\n| &&
-             `      return { start, end };` && |\n|.
-    result = result &&
+             `      return { start, end };` && |\n| &&
              `    } catch {` && |\n| &&
              `      return null;` && |\n| &&
              `    }` && |\n| &&
@@ -458,7 +424,8 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `` && |\n| &&
              `  function hasSafeProtocol(parsed) {` && |\n| &&
              `    if (SAFE_PROTOCOLS.includes(parsed.protocol)) return true;` && |\n| &&
-             `    logError(` && |\n| &&
+             `    logError(` && |\n|.
+    result = result &&
              `      ``Security: Blocked redirect with invalid protocol: ${parsed.protocol}``,` && |\n| &&
              `    );` && |\n| &&
              `    return false;` && |\n| &&
@@ -491,27 +458,6 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `` && |\n| &&
              `  function isValidContextId(id) {` && |\n| &&
              `    return typeof id === "string" && id !== "" && id !== "undefined";` && |\n| &&
-             `  }` && |\n| &&
-             `` && |\n| &&
-             `  function withSapClient(url, pageHref, shellClient) {` && |\n| &&
-             `    if (typeof url !== "string" || !url) return url;` && |\n| &&
-             `    try {` && |\n| &&
-             `      const page = new URL(pageHref);` && |\n| &&
-             `      const parsed = new URL(url, page.href);` && |\n| &&
-             `      if (parsed.origin !== page.origin) return url;` && |\n| &&
-             `      if (parsed.searchParams.has("sap-client")) return url;` && |\n| &&
-             `      const client = page.searchParams.get("sap-client") || shellClient;` && |\n| &&
-             `      if (typeof client !== "string" || !/^[0-9]{3}$/.test(client)) return url;` && |\n| &&
-             `      const hashAt = url.indexOf("#");` && |\n| &&
-             `      const base = hashAt < 0 ? url : url.slice(0, hashAt);` && |\n| &&
-             `      const hash = hashAt < 0 ? "" : url.slice(hashAt);` && |\n| &&
-             `      let separator = "&";` && |\n| &&
-             `      if (!base.includes("?")) separator = "?";` && |\n| &&
-             `      else if (base.endsWith("?") || base.endsWith("&")) separator = "";` && |\n| &&
-             `      return ``${base}${separator}sap-client=${client}${hash}``;` && |\n| &&
-             `    } catch {` && |\n| &&
-             `      return url;` && |\n| &&
-             `    }` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  function parseDeltaSteps(segs) {` && |\n| &&
@@ -669,17 +615,13 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `` && |\n| &&
              `  const MAX_ARG_DEPTH = 4;` && |\n| &&
              `` && |\n| &&
-             `  function isA(value, type) {` && |\n| &&
+             `  function isManagedObject(value) {` && |\n| &&
              `    return (` && |\n| &&
              `      value !== null &&` && |\n| &&
              `      typeof value === "object" &&` && |\n| &&
              `      typeof value.isA === "function" &&` && |\n| &&
-             `      value.isA(type)` && |\n| &&
+             `      value.isA("sap.ui.base.ManagedObject")` && |\n| &&
              `    );` && |\n| &&
-             `  }` && |\n| &&
-             `` && |\n| &&
-             `  function isManagedObject(value) {` && |\n| &&
-             `    return isA(value, "sap.ui.base.ManagedObject");` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  const pad = (n, w = 2) => String(n).padStart(w, "0");` && |\n| &&
@@ -710,7 +652,12 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `  }` && |\n| &&
              `` && |\n| &&
              `  function isContext(value) {` && |\n| &&
-             `    return isA(value, "sap.ui.model.Context");` && |\n| &&
+             `    return (` && |\n| &&
+             `      value !== null &&` && |\n| &&
+             `      typeof value === "object" &&` && |\n| &&
+             `      typeof value.isA === "function" &&` && |\n| &&
+             `      value.isA("sap.ui.model.Context")` && |\n| &&
+             `    );` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  function isPlainObject(value) {` && |\n| &&
@@ -756,7 +703,12 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `  }` && |\n| &&
              `` && |\n| &&
              `  function isEvent(value) {` && |\n| &&
-             `    return isA(value, "sap.ui.base.Event");` && |\n| &&
+             `    return (` && |\n| &&
+             `      value !== null &&` && |\n| &&
+             `      typeof value === "object" &&` && |\n| &&
+             `      typeof value.isA === "function" &&` && |\n| &&
+             `      value.isA("sap.ui.base.Event")` && |\n| &&
+             `    );` && |\n| &&
              `  }` && |\n| &&
              `` && |\n| &&
              `  function projectEvent(event, level, ancestors) {` && |\n| &&
@@ -820,13 +772,10 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `    isControllerAlive,` && |\n| &&
              `    requireODataModel,` && |\n| &&
              `    afterRoundtrip,` && |\n| &&
-             `    dispatchWhenIdle,` && |\n| &&
-             `    withinFileSize,` && |\n| &&
              `    isAlive,` && |\n| &&
              `    claimOnce,` && |\n| &&
              `    isTextInput,` && |\n| &&
-             `    readCaret,` && |\n|.
-    result = result &&
+             `    readCaret,` && |\n| &&
              `    registerCallback,` && |\n| &&
              `    unregisterCallback,` && |\n| &&
              `    readFilesInTurn,` && |\n| &&
@@ -850,7 +799,6 @@ CLASS /sct/au5_cl_ui5f_lib_js IMPLEMENTATION.
              `    isSafeRedirectProtocol,` && |\n| &&
              `    isSafeDownloadURL,` && |\n| &&
              `    isValidContextId,` && |\n| &&
-             `    withSapClient,` && |\n| &&
              `    buildDeltaFromPaths,` && |\n| &&
              `    sanitizeMessageDetails,` && |\n| &&
              `    isRootModelSlot,` && |\n| &&

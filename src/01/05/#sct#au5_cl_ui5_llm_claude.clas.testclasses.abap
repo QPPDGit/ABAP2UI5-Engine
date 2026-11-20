@@ -82,9 +82,9 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_body.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                                api_key = `test-key`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                                api_key  = `test-key`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( system    = `Answer briefly.`
                                               t_message = conversation( ) ).
@@ -114,9 +114,9 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_headers.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                                api_key = `test-key`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                                api_key  = `test-key`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( conversation( ) ).
 
@@ -131,8 +131,8 @@ CLASS ltcl_test IMPLEMENTATION.
                                                        name       = `content-type` ) ).
 
     " without a key no key header - the destination or a gateway adds it
-    lo_llm = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                          io_http = NEW ltd_http( ) ).
+    lo_llm = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                          io_http  = NEW ltd_http( ) ).
     ls_request = lo_llm->build_request( conversation( ) ).
     cl_abap_unit_assert=>assert_equals( exp = ``
                                         act = header( is_request = ls_request
@@ -143,8 +143,8 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD test_request_escaping.
 
     DATA(lv_text) = |say "hi"{ /sct/au5_cl_ui5_util_context=>cv_char_util_newline }and \\ bye|.
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request(
         VALUE #( ( role = /sct/au5_if_ui5_llm=>cs_role-user content = lv_text ) ) ).
@@ -159,8 +159,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_options.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( t_message = conversation( )
                                               s_options = VALUE #( model       = `other-model`
@@ -180,7 +180,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_destination.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model       = `test-model`
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model    = `test-model`
                                                 destination = `Z_LLM`
                                                 timeout     = 30
                                                 io_http     = NEW ltd_http( ) ).
@@ -198,8 +198,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_no_model.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = ``
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = ``
+                                                io_http  = NEW ltd_http( ) ).
     TRY.
         lo_llm->build_request( conversation( ) ).
         cl_abap_unit_assert=>fail( `a request without a model must be refused` ).
@@ -216,8 +216,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
     DATA lt_bad TYPE string_table.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                                io_http  = NEW ltd_http( ) ).
     " `.7` and `1.` passed the character check and went out as invalid JSON
     lt_bad = VALUE #( ( `1.2.3` ) ( `.7` ) ( `1.` ) ( `.` ) ).
     LOOP AT lt_bad INTO DATA(lv_bad).
@@ -245,7 +245,7 @@ CLASS ltcl_test IMPLEMENTATION.
             && `{"type":"text","text":"abap2UI5 builds UI5 apps in ABAP."}],`
             && `"stop_reason":"end_turn","usage":{"input_tokens":21,"output_tokens":9}}`.
     DATA(ls_result) = /sct/au5_cl_ui5_llm_claude=>parse_response( VALUE #( status = 200
-                                                                        body   = lv_body ) ).
+                                                                        body      = lv_body ) ).
 
     cl_abap_unit_assert=>assert_equals( exp = `abap2UI5 builds UI5 apps in ABAP.`
                                         act = ls_result-text ).
@@ -323,9 +323,9 @@ CLASS ltcl_test IMPLEMENTATION.
         status = 200
         body   = `{"model":"test-model","content":[{"type":"text","text":"42"}],`
               && `"stop_reason":"end_turn","usage":{"input_tokens":3,"output_tokens":1}}` ).
-    li_llm = NEW /sct/au5_cl_ui5_llm_claude( model   = `test-model`
-                                          api_key = `test-key`
-                                          io_http = lo_http ).
+    li_llm = NEW /sct/au5_cl_ui5_llm_claude( model = `test-model`
+                                          api_key  = `test-key`
+                                          io_http  = lo_http ).
 
     DATA(ls_result) = li_llm->chat( system    = `Be brief.`
                                     t_message = conversation( ) ).

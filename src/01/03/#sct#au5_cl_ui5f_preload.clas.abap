@@ -15,21 +15,21 @@ CLASS /sct/au5_cl_ui5f_preload DEFINITION
     " a digest of the script get( ) returns - every embedded frontend source
     " and the code around them - fixed at generation time. Part of the GET
     " shell's ETag (/sct/au5_cl_ui5_http_handler=>_get_etag)
-    CONSTANTS build_hash TYPE string VALUE '147ab960caec3283'.
+    CONSTANTS build_hash TYPE string VALUE '8d5c008694c0db5f'.
 
     " the same digest as a CSP hash source, without the quotes around it:
     " /sct/au5_cl_ui5_http_handler=>_http_get lists it in the policy's
     " script-src, so this one inline script runs without 'unsafe-inline'.
     " It is the SHA-256 of get( ) byte for byte - a script that differs by one
     " character does not run at all, which the browser e2e legs would show
-    CONSTANTS script_hash TYPE string VALUE 'sha256-FHq5YMrsMoNwrV6Om04QjcCQiWzucNn/7P0Cx1oNUw8='.
+    CONSTANTS script_hash TYPE string VALUE 'sha256-jVwAhpTA21+AmGWce5e+fZO/SSfh6G8sNzBEPDPxovk='.
 
     " a digest of the devtools bundle get_devtools( ) returns - the files
     " of the developer tools the shell does not carry. The ETag of that
     " bundle carries it (/sct/au5_cl_ui5_http_handler=>_http_get_devtools):
     " build_hash is taken over the shell's script alone and does not change
     " with them
-    CONSTANTS devtools_hash TYPE string VALUE 'c7c03c632a8646de'.
+    CONSTANTS devtools_hash TYPE string VALUE '693fa0893f20c81a'.
 
     CLASS-METHODS get
       RETURNING
@@ -45,8 +45,8 @@ CLASS /sct/au5_cl_ui5f_preload DEFINITION
     " the developer tools as a script of the same shape: the dialog, its
     " fragment, the inspectors - everything under devtools/ the shell does
     " not carry (tools/app2abap/trans2abap.js, DEVTOOLS_EAGER). Served on
-    " ?sctau5-bundle=devtools (/sct/au5_cl_ui5_http_handler=>_http_get_devtools)
-    " and loaded by sctau5/devtools/DevTools.js when the tools are opened
+    " ?z2ui5-bundle=devtools (/sct/au5_cl_ui5_http_handler=>_http_get_devtools)
+    " and loaded by z2ui5/devtools/DevTools.js when the tools are opened
     CLASS-METHODS get_devtools
       RETURNING
         VALUE(result) TYPE string.
@@ -122,7 +122,6 @@ CLASS /sct/au5_cl_ui5f_preload IMPLEMENTATION.
              |      "sctau5/cc/ExcelBridge.js": function()\{{ /sct/au5_cl_ui5f_excel_js=>get( ) }\},| && |\n| &&
              |      "sctau5/cc/FileUploader.js": function()\{{ /sct/au5_cl_ui5f_uploader_js=>get( ) }\},| && |\n| &&
              |      "sctau5/cc/Geolocation.js": function()\{{ /sct/au5_cl_ui5f_geoloc_js=>get( ) }\},| && |\n| &&
-             |      "sctau5/cc/HTMLFrame.js": function()\{{ /sct/au5_cl_ui5f_htmlfrm_js=>get( ) }\},| && |\n| &&
              |      "sctau5/cc/InputExt.js": function()\{{ /sct/au5_cl_ui5f_inputext_js=>get( ) }\},| && |\n| &&
              |      "sctau5/cc/MessageManager.js": function()\{{ /sct/au5_cl_ui5f_msgmgr_js=>get( ) }\},| && |\n| &&
              |      "sctau5/cc/MultiInputExt.js": function()\{{ /sct/au5_cl_ui5f_multiinp_js=>get( ) }\},| && |\n| &&
@@ -148,7 +147,6 @@ CLASS /sct/au5_cl_ui5f_preload IMPLEMENTATION.
              |      "sctau5/core/Server.js": function()\{{ /sct/au5_cl_ui5f_server_js=>get( ) }\},| && |\n| &&
              |      "sctau5/core/Session.js": function()\{{ /sct/au5_cl_ui5f_session_js=>get( ) }\},| && |\n| &&
              |      "sctau5/core/ViewSlots.js": function()\{{ /sct/au5_cl_ui5f_viewslot_js=>get( ) }\},| && |\n| &&
-             |      "sctau5/core/WindowModel.js": function()\{{ /sct/au5_cl_ui5f_window_js=>get( ) }\},| && |\n| &&
              |      "sctau5/core/actions/BindingCall.js": function()\{{ /sct/au5_cl_ui5f_bindcall_js=>get( ) }\},| && |\n| &&
              |      "sctau5/core/actions/Browser.js": function()\{{ /sct/au5_cl_ui5f_browser_js=>get( ) }\},| && |\n| &&
              |      "sctau5/core/actions/ControlCall.js": function()\{{ /sct/au5_cl_ui5f_ctrlcall_js=>get( ) }\},| && |\n| &&

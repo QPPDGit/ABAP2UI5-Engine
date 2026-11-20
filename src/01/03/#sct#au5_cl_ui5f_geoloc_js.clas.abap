@@ -115,10 +115,7 @@ CLASS /sct/au5_cl_ui5f_geoloc_js IMPLEMENTATION.
              `` && |\n| &&
              `      callbackError(error) {` && |\n| &&
              `        if (Lib.isDestroyed(this)) return;` && |\n| &&
-             `` && |\n| &&
-             `        Lib.logError(` && |\n| &&
-             `          ``Geolocation error (${error.code}) on ${this.getId()}: ${error.message}``,` && |\n| &&
-             `        );` && |\n| &&
+             `        Lib.logError(``Geolocation error (${error.code}): ${error.message}``);` && |\n| &&
              `        this.fireError({` && |\n| &&
              `          code: String(error.code),` && |\n| &&
              `          message: error.message,` && |\n| &&

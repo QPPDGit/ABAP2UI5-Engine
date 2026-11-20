@@ -82,8 +82,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_body.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model   = `test-model`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model = `test-model`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( system    = `Answer briefly.`
                                               t_message = conversation( ) ).
@@ -114,9 +114,9 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_headers.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model   = `test-model`
-                                                api_key = `test-key`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model = `test-model`
+                                                api_key  = `test-key`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( conversation( ) ).
 
@@ -153,8 +153,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_request_tokens.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model   = `test-model`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model = `test-model`
+                                                io_http  = NEW ltd_http( ) ).
     DATA(ls_request) = lo_llm->build_request( t_message = conversation( )
                                               s_options = VALUE #( max_tokens  = 300
                                                                    temperature = `0.7` ) ).
@@ -165,7 +165,7 @@ CLASS ltcl_test IMPLEMENTATION.
                                          act = ls_request-body ).
 
     " a server that only knows the older name
-    lo_llm = NEW /sct/au5_cl_ui5_llm_openai( model               = `test-model`
+    lo_llm = NEW /sct/au5_cl_ui5_llm_openai( model            = `test-model`
                                           check_legacy_tokens = abap_true
                                           io_http             = NEW ltd_http( ) ).
     ls_request = lo_llm->build_request( t_message = conversation( )
@@ -181,9 +181,9 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD test_request_local_url.
 
     " a local Ollama: no key, no destination, a URL of its own
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model   = `test-model`
-                                                url     = `http://localhost:11434/v1/chat/completions`
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model = `test-model`
+                                                url      = `http://localhost:11434/v1/chat/completions`
+                                                io_http  = NEW ltd_http( ) ).
 
     DATA(ls_request) = lo_llm->build_request( conversation( ) ).
 
@@ -197,8 +197,8 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD test_no_model.
 
-    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model   = ``
-                                                io_http = NEW ltd_http( ) ).
+    DATA(lo_llm) = NEW /sct/au5_cl_ui5_llm_openai( model = ``
+                                                io_http  = NEW ltd_http( ) ).
     TRY.
         lo_llm->build_request( conversation( ) ).
         cl_abap_unit_assert=>fail( `a request without a model must be refused` ).
@@ -218,7 +218,7 @@ CLASS ltcl_test IMPLEMENTATION.
             && `"choices":[{"index":0,"message":{"role":"assistant","content":"abap2UI5 builds UI5 apps in ABAP."},`
             && `"finish_reason":"stop"}],"usage":{"prompt_tokens":25,"completion_tokens":8,"total_tokens":33}}`.
     DATA(ls_result) = /sct/au5_cl_ui5_llm_openai=>parse_response( VALUE #( status = 200
-                                                                        body   = lv_body ) ).
+                                                                        body      = lv_body ) ).
 
     cl_abap_unit_assert=>assert_equals( exp = `abap2UI5 builds UI5 apps in ABAP.`
                                         act = ls_result-text ).
@@ -308,8 +308,8 @@ CLASS ltcl_test IMPLEMENTATION.
         status = 200
         body   = `{"model":"test-model","choices":[{"message":{"role":"assistant","content":"42"},`
               && `"finish_reason":"stop"}],"usage":{"prompt_tokens":3,"completion_tokens":1}}` ).
-    li_llm = NEW /sct/au5_cl_ui5_llm_openai( model   = `test-model`
-                                          io_http = lo_http ).
+    li_llm = NEW /sct/au5_cl_ui5_llm_openai( model = `test-model`
+                                          io_http  = lo_http ).
 
     DATA(ls_result) = li_llm->chat( conversation( ) ).
 

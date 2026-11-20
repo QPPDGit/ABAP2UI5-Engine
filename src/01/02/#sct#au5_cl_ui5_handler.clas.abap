@@ -658,7 +658,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
     ENDIF.
 
     result = app_start_normalize( /sct/au5_cl_ui5_util_context=>url_param_get( val = `app_start`
-                                                                            url = iv_search ) ).
+                                                                            url    = iv_search ) ).
   ENDMETHOD.
 
   METHOD app_start_normalize.
@@ -806,7 +806,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
         SHIFT lv_hash LEFT DELETING LEADING `/`.
         result = /sct/au5_cl_ui5_util_context=>c_trim_upper(
             /sct/au5_cl_ui5_util_context=>url_param_get( val = `sctau5-xapp-state`
-                                                      url = lv_hash ) ).
+                                                      url    = lv_hash ) ).
       CATCH cx_root ##NO_HANDLER.
     ENDTRY.
   ENDMETHOD.
@@ -866,9 +866,9 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
     " restoring the draft. app/webapp/core/Router.js (parse) mirrors this
     CLEAR: ev_class, ev_after.
     DATA(lv_rest) = /sct/au5_cl_ui5_util_context=>c_cut_at( val = iv_rest
-                                                         sub = `&` ).
+                                                         sub    = `&` ).
     lv_rest = /sct/au5_cl_ui5_util_context=>c_cut_at( val = lv_rest
-                                                   sub = `?` ).
+                                                   sub    = `?` ).
     DATA(lv_off) = 0.
     IF strlen( lv_rest ) > 1 AND lv_rest(1) = `/`.
       DATA(lv_tail) = substring( val = lv_rest
@@ -918,7 +918,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
         ENDIF.
         result = /sct/au5_cl_ui5_util_context=>c_trim_upper(
             /sct/au5_cl_ui5_util_context=>c_cut_at( val = lv_after
-                                                 sub = `/` ) ).
+                                                 sub    = `/` ) ).
       CATCH cx_root ##NO_HANDLER.
     ENDTRY.
   ENDMETHOD.
@@ -1016,7 +1016,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
         " built before it is raised so the monitor sees the very object the
         " 500 body renders - the error id get_text_full stamps on it is then
         " the same in the monitor's log and on the user's screen
-        DATA(lx_error) = NEW /sct/au5_cx_ui5_util_error( val      = lv_context
+        DATA(lx_error) = NEW /sct/au5_cx_ui5_util_error( val   = lv_context
                                                       previous = x ).
         " A failed roundtrip of an app that is not sticky leaves the LUW as
         " the failure left it: the db_rollback that follows the app's main( )
@@ -1126,7 +1126,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
 
     " 300 characters of the value, then the ellipsis
     result = /sct/au5_cl_ui5_util_context=>c_truncate( val = val
-                                                    max = 303 ).
+                                                    max    = 303 ).
 
   ENDMETHOD.
 
@@ -1561,7 +1561,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
         " The view stays, the model goes out with the new window - pushed as
         " a stale one, since no bound VALUE changed
         IF /sct/au5_cl_ui5_srv_window=>event_apply( t_arg = mo_action->ms_actual-t_event_arg
-                                                 attri = mo_action->mo_app->mt_attri ) = abap_true.
+                                                 attri    = mo_action->mo_app->mt_attri ) = abap_true.
           mo_action->mo_app->mv_model_client_stale = abap_true.
         ENDIF.
       WHEN OTHERS.
@@ -1710,7 +1710,7 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
   METHOD monitor_durations.
 
     cs_roundtrip-ms_total = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = ms_monitor_time-start
-                                                                              time_to    = iv_now ).
+                                                                              time_to       = iv_now ).
 
     IF ms_monitor_time-loaded IS INITIAL.
       cs_roundtrip-ms_load = cs_roundtrip-ms_total.
@@ -1718,22 +1718,22 @@ CLASS /sct/au5_cl_ui5_handler IMPLEMENTATION.
     ENDIF.
 
     cs_roundtrip-ms_load = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = ms_monitor_time-start
-                                                                             time_to    = ms_monitor_time-loaded ).
+                                                                             time_to       = ms_monitor_time-loaded ).
 
     IF ms_monitor_time-render_start IS INITIAL.
       cs_roundtrip-ms_main = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = ms_monitor_time-loaded
-                                                                               time_to    = iv_now ).
+                                                                               time_to       = iv_now ).
       RETURN.
     ENDIF.
 
     cs_roundtrip-ms_main = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = ms_monitor_time-loaded
-                                                                             time_to    = ms_monitor_time-render_start ).
+                                                                             time_to       = ms_monitor_time-render_start ).
 
     DATA(lv_render_end) = COND #( WHEN ms_monitor_time-render_end IS INITIAL
                                   THEN iv_now
                                   ELSE ms_monitor_time-render_end ).
     cs_roundtrip-ms_render = /sct/au5_cl_ui5_util_context=>time_diff_milliseconds( time_from = ms_monitor_time-render_start
-                                                                               time_to    = lv_render_end ).
+                                                                               time_to       = lv_render_end ).
 
   ENDMETHOD.
 

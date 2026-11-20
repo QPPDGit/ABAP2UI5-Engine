@@ -1923,7 +1923,7 @@ CLASS ltcl_test_http_response IMPLEMENTATION.
     " the cloud pair: request and response objects, no server, so nothing
     " on-premise to keep
     DATA(lo_handler) = /sct/au5_cl_ui5_http_handler=>factory( req = NEW ltcl_server_shape( )
-                                                           res = NEW ltcl_server_shape( ) ).
+                                                           res    = NEW ltcl_server_shape( ) ).
 
     cl_abap_unit_assert=>assert_bound( lo_handler->mo_server ).
     cl_abap_unit_assert=>assert_bound( lo_handler->mo_server->mo_request_cloud ).

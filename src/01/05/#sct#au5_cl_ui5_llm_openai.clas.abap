@@ -292,7 +292,7 @@ CLASS /sct/au5_cl_ui5_llm_openai IMPLEMENTATION.
       ENDIF.
       IF lv_message IS INITIAL.
         lv_message = /sct/au5_cl_ui5_util_context=>c_truncate( val = is_response-body
-                                                           max  = 200 ).
+                                                           max     = 200 ).
       ENDIF.
       RAISE EXCEPTION TYPE /sct/au5_cx_ui5_llm
         EXPORTING

@@ -347,7 +347,7 @@ CLASS ltcl_00_base IMPLEMENTATION.
     result->mo_action->mo_app->ms_draft-id = /sct/au5_cl_ui5_util_context=>uuid_get_c32( ).
 
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = result->mo_action->mo_app->mt_attri
-                                                  app  = lo_app ).
+                                                  app     = lo_app ).
     " main_attri_refresh runs the (private) dissolve pass - on this fresh,
     " unbound model it is a pure dissolve, which is all the test needs
     lo_model->main_attri_refresh( ).
@@ -1501,7 +1501,7 @@ CLASS ltcl_02_response IMPLEMENTATION.
     DATA(lv_ctrl) = /sct/au5_cl_ui5_util_context=>conv_get_string_by_xstring( CONV xstring( `01` ) ).
     ls_response-s_front-id = `ID123`.
     ls_response-model      = /sct/au5_cl_ajson=>create_empty( )->set( iv_path = `/NAME`
-                                                                   iv_val  = `a` && lv_ctrl && `b` )->stringify( ).
+                                                                   iv_val     = `a` && lv_ctrl && `b` )->stringify( ).
 
     DATA(lv_json) = lo_handler->response_abap_to_json( ls_response ).
 

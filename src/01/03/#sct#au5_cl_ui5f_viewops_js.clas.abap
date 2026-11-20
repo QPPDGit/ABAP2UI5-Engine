@@ -119,7 +119,8 @@ CLASS /sct/au5_cl_ui5f_viewops_js IMPLEMENTATION.
              `        return;` && |\n| &&
              `      }` && |\n| &&
              `` && |\n| &&
-             `      const index = String(args[2] ?? "");` && |\n| &&
+             `      const index =` && |\n| &&
+             `        typeof args[2] === "number" ? String(args[2]) : String(args[2] ?? "");` && |\n| &&
              `      if (!/^\d+$/.test(index.trim())) {` && |\n| &&
              `        Lib.logError(` && |\n| &&
              `          ``BIND_ELEMENT: '${args[2] ?? ""}' is no row index of '${path}' - the view is not rebound``,` && |\n| &&
@@ -178,18 +179,6 @@ CLASS /sct/au5_cl_ui5f_viewops_js IMPLEMENTATION.
              `          if (start !== null) info.selectionStart = start;` && |\n| &&
              `          if (end !== null) info.selectionEnd = end;` && |\n| &&
              `          oElement.applyFocusInfo(info);` && |\n| &&
-             `` && |\n| &&
-             `          const from = start ?? end;` && |\n| &&
-             `          const to = end ?? start;` && |\n| &&
-             `          const field = oElement.getFocusDomRef?.();` && |\n| &&
-             `          const caret = from === null ? null : Lib.readCaret(field);` && |\n| &&
-             `          if (` && |\n| &&
-             `            caret &&` && |\n| &&
-             `            document.activeElement === field &&` && |\n| &&
-             `            (caret.start !== from || caret.end !== to)` && |\n| &&
-             `          ) {` && |\n| &&
-             `            field.setSelectionRange(from, to);` && |\n| &&
-             `          }` && |\n| &&
              `        } catch (e) {` && |\n| &&
              `          Lib.logError(``SET_FOCUS: failed for '${args[1]}'``, e);` && |\n| &&
              `        }` && |\n| &&
@@ -203,7 +192,8 @@ CLASS /sct/au5_cl_ui5f_viewops_js IMPLEMENTATION.
              `` && |\n| &&
              `          if (!ScrollFocus.mayMoveFocus(oController.ctx)) return;` && |\n| &&
              `          applyFocus();` && |\n| &&
-             `          if (oElement.getDomRef()?.contains(document.activeElement)) return;` && |\n| &&
+             `          const dom = oElement.getDomRef();` && |\n| &&
+             `          if (dom && dom.contains(document.activeElement)) return;` && |\n| &&
              `` && |\n| &&
              `          const prevActive = document.activeElement;` && |\n| &&
              `` && |\n| &&

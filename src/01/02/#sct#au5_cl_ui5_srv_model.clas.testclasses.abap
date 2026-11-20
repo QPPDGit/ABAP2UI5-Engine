@@ -884,10 +884,10 @@ CLASS ltcl_00_base IMPLEMENTATION.
 
     CLEAR mo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = mo_app ).
+                                          IMPORTING any    = mo_app ).
     CREATE DATA mr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = mr_attri->* ).
+                                          IMPORTING any    = mr_attri->* ).
     IF io_replace_app IS BOUND.
       mo_app = io_replace_app.
     ENDIF.
@@ -1225,7 +1225,7 @@ CLASS ltcl_01_dissolve IMPLEMENTATION.
     DATA(lo_app) = NEW ltcl_app_samples( ).
     DATA lt_attri TYPE /sct/au5_if_ui5_types=>ty_t_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = REF #( lt_attri )
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
     lo_model->main_attri_refresh( ).
 
     cl_abap_unit_assert=>assert_true( xsdbool( line_exists(
@@ -1545,7 +1545,7 @@ CLASS ltcl_02_search IMPLEMENTATION.
     lo_app->ms_data-ms_data2-val = `two`.
     DATA lt_attri TYPE /sct/au5_if_ui5_types=>ty_t_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = REF #( lt_attri )
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " the leaf reached THROUGH the reference is the owner's leaf
     DATA(lr_leaf) = lo_model->attri_get_val_ref( `MR_ALIAS->MS_DATA2-VAL` ).
@@ -1568,7 +1568,7 @@ CLASS ltcl_02_search IMPLEMENTATION.
     lo_app->ms_data-ms_data2-ms_data2-ms_data2-ms_data2-ms_data2-ms_data2-val = `deep`.
     DATA lt_attri TYPE /sct/au5_if_ui5_types=>ty_t_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = REF #( lt_attri )
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
     DATA(lr_attri) = lo_model->main_attri_search(
         REF #( lo_app->ms_data-ms_data2-ms_data2-ms_data2-ms_data2-ms_data2-ms_data2-val ) ).
     cl_abap_unit_assert=>assert_equals( exp = `MS_DATA-MS_DATA2-MS_DATA2-MS_DATA2-MS_DATA2-MS_DATA2-MS_DATA2-VAL`
@@ -1800,7 +1800,7 @@ CLASS ltcl_03_model_out IMPLEMENTATION.
 
     DATA lt_attri TYPE /sct/au5_if_ui5_types=>ty_t_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = REF #( lt_attri )
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
     DATA(lr_attri) = lo_model->main_attri_search( REF #( lo_app->mt_rows ) ).
     lr_attri->bind        = abap_true.
     lr_attri->name_client = `/MT_ROWS`.
@@ -2435,7 +2435,7 @@ CLASS ltcl_04_model_in IMPLEMENTATION.
     DATA lr_attri TYPE REF TO /sct/au5_if_ui5_types=>ty_t_attri.
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " a cell inside the nested table, a root cell next to it
     lo_model->delta_apply_to_table( io_val_front = delta( `{"__delta":{"0":{"ENABLED":true,"NODES":{"__delta":{"1":{"VALIDATED":true}}}}}}` )
@@ -2676,7 +2676,7 @@ CLASS ltcl_04_model_in IMPLEMENTATION.
     DATA lr_attri TYPE REF TO /sct/au5_if_ui5_types=>ty_t_attri.
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " what the client sends for an edit of /MT_TREE/0/S_ADR/CITY: the whole
     " structure, read from its current model - every component lands
@@ -2901,7 +2901,7 @@ CLASS ltcl_04_model_in IMPLEMENTATION.
     lo_app->mt_row = VALUE #( ( qty = 7 text = `seven` ) ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " a JSON number and a JSON string carry the same text to the cell: the
     " raw text converts, no binary float sits in between (0.1 stays 0.1)
@@ -2966,7 +2966,7 @@ CLASS ltcl_04_model_in IMPLEMENTATION.
                                                                      ( qty = 3 txt = `L3` ) ) ) ) ) ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " row 1 / mid row 2 / leaf row 2: one cell lands, one is refused
     lo_model->delta_apply_to_table(
@@ -3106,7 +3106,7 @@ CLASS ltcl_04_model_in IMPLEMENTATION.
     lo_app->ms_head = VALUE #( qty = 1 txt = `head` ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     lo_model->delta_apply_to_table( io_val_front = delta( `{"__delta":{"0":{"TXT":"edited"}}}` )
                                     iv_name      = `MS_HEAD` ).
@@ -3360,7 +3360,7 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     " combined document and no type of its own
     DATA(lr_row) = row_ref( `MR_SHARED_B` ).
     DATA(lr_val) = /sct/au5_cl_ui5_util_context=>xml_srtti_parse_pair( iv_type = lr_row->srtti_type
-                                                                    iv_data = lr_row->srtti_data ).
+                                                                    iv_data    = lr_row->srtti_data ).
     ASSIGN lr_val->* TO <val>.
     lr_row->srtti_data = legacy_document( <val> ).
     CLEAR lr_row->srtti_type.
@@ -3410,7 +3410,7 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA lr_attri TYPE REF TO /sct/au5_if_ui5_types=>ty_t_attri.
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
     DATA(ls_bind) = lo_model->main_attri_search( lo_app->mr_table ).
     ls_bind->bind = abap_true.
     ls_bind->name_client = `/MR_TABLE`.
@@ -3426,10 +3426,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_app ).
+                                          IMPORTING any    = lo_app ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_app ).
     lo_model->main_attri_db_load( ).
@@ -3510,10 +3510,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( mr_attri->* ).
     CLEAR mo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = mo_app ).
+                                          IMPORTING any    = mo_app ).
     CREATE DATA mr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = mr_attri->* ).
+                                          IMPORTING any    = mr_attri->* ).
     " the rows of the attribute that is gone: a plain one, and a dref with
     " a payload nobody can put anywhere
     INSERT VALUE #( name            = `MV_GONE`
@@ -3554,10 +3554,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( mr_attri->* ).
     CLEAR mo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = mo_app ).
+                                          IMPORTING any    = mo_app ).
     CREATE DATA mr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = mr_attri->* ).
+                                          IMPORTING any    = mr_attri->* ).
     DELETE mr_attri->* WHERE name = `MV_XSTR`.
     model_renew( ).
     mo_model->main_attri_db_load( ).
@@ -3582,7 +3582,7 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA lr_attri TYPE REF TO /sct/au5_if_ui5_types=>ty_t_attri.
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_host ).
+                                                 app      = lo_host ).
     DATA(ls_bind) = lo_model->main_attri_search( REF #( lo_host->mv_selectedkey ) ).
     ls_bind->bind = abap_true.
     ls_bind->name_client = `/MV_SELECTEDKEY`.
@@ -3600,10 +3600,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_host.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_host ).
+                                          IMPORTING any    = lo_host ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     DATA(lo_b) = NEW ltcl_shp_sub_b( ).
     lo_b->mo_lay = NEW #( ).
     lo_b->fill( ).
@@ -3640,7 +3640,7 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA lr_attri TYPE REF TO /sct/au5_if_ui5_types=>ty_t_attri.
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_host ).
+                                                 app      = lo_host ).
     DATA(ls_bind) = lo_model->main_attri_search( lo_a->mt_table ).
     ls_bind->bind = abap_true.
     ls_bind->name_client = `/MO_APP_MT_TABLE`.
@@ -3650,10 +3650,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_host.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_host ).
+                                          IMPORTING any    = lo_host ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_host ).
     lo_model->main_attri_db_load( ).
@@ -3673,10 +3673,10 @@ CLASS ltcl_05_draft IMPLEMENTATION.
     lv_attri_xml = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_host.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_host ).
+                                          IMPORTING any    = lo_host ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_host ).
     lo_model->main_attri_db_load( ).
@@ -4235,7 +4235,7 @@ CLASS ltcl_06_struct_alias IMPLEMENTATION.
     lo_app->fill( ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " the table bound through the alias, as _bind( mr_alias->t_items ) does
     ASSIGN lo_app->mr_alias->* TO <struc>.
@@ -4251,10 +4251,10 @@ CLASS ltcl_06_struct_alias IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_app ).
+                                          IMPORTING any    = lo_app ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_app ).
     lo_model->main_attri_db_load( ).
@@ -4341,7 +4341,7 @@ CLASS ltcl_07_alias_dref IMPLEMENTATION.
     lo_app->fill( ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " the first save of an app that bound nothing yet - the save's own
     " dissolve creates the rows, so the inherited name_ref is still there
@@ -4350,10 +4350,10 @@ CLASS ltcl_07_alias_dref IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_app ).
+                                          IMPORTING any    = lo_app ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_app ).
     lo_model->main_attri_db_load( ).
@@ -4437,7 +4437,7 @@ CLASS ltcl_06_two_refs IMPLEMENTATION.
     lo_app->fill( ).
     CREATE DATA lr_attri.
     DATA(lo_model) = NEW /sct/au5_cl_ui5_srv_model( attri = lr_attri
-                                                 app   = lo_app ).
+                                                 app      = lo_app ).
 
     " the table bound through the FIRST reference, as _bind( mr_a->* ) does
     ASSIGN lo_app->mr_a->* TO <tab>.
@@ -4459,10 +4459,10 @@ CLASS ltcl_06_two_refs IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( lr_attri->* ).
     CLEAR lo_app.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = lo_app ).
+                                          IMPORTING any    = lo_app ).
     CREATE DATA lr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = lr_attri->* ).
+                                          IMPORTING any    = lr_attri->* ).
     lo_model = NEW #( attri = lr_attri
                       app   = lo_app ).
     lo_model->main_attri_db_load( ).
@@ -4756,10 +4756,10 @@ CLASS ltcl_07_view_host IMPLEMENTATION.
     DATA(lv_attri_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( mr_attri->* ).
     CLEAR mo_host.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_app_xml
-                                          IMPORTING any = mo_host ).
+                                          IMPORTING any    = mo_host ).
     CREATE DATA mr_attri.
     /sct/au5_cl_ui5_util_context=>xml_parse( EXPORTING xml = lv_attri_xml
-                                          IMPORTING any = mr_attri->* ).
+                                          IMPORTING any    = mr_attri->* ).
     mo_model = NEW #( attri = mr_attri
                       app   = mo_host ).
     mo_model->main_attri_db_load( ).
@@ -5023,7 +5023,7 @@ CLASS ltcl_06_fast_json IMPLEMENTATION.
     DATA(lv_raw) = `a"b\c` && /sct/au5_cl_ui5_util_context=>cv_char_util_horizontal_tab && /sct/au5_cl_ui5_util_context=>cv_char_util_newline
                    && /sct/au5_cl_ui5_util_context=>cv_char_util_cr_lf && `/ $& \u0041 ` && `{}`.
     DATA(lv_exp) = /sct/au5_cl_ajson=>create_empty( )->set( iv_path = `/V`
-                                                        iv_val   = lv_raw )->stringify( ).
+                                                        iv_val      = lv_raw )->stringify( ).
     cl_abap_unit_assert=>assert_equals( exp = lv_exp
                                         act = |\{"V":"{ /sct/au5_cl_ui5_util_context=>c_escape_json( lv_raw ) }"\}| ).
     " nothing to escape: the text itself

@@ -240,7 +240,7 @@ CLASS /sct/au5_cl_ui5_action IMPLEMENTATION.
     DATA li_app_type TYPE REF TO /sct/au5_if_app.
     DATA(lv_app_intf) = /sct/au5_cl_ui5_util_context=>rtti_get_ref_type_name( li_app_type ).
     IF /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = lv_app_start
-                                                              intf  = lv_app_intf ) = abap_false.
+                                                              intf     = lv_app_intf ) = abap_false.
       RAISE EXCEPTION TYPE /sct/au5_cx_ui5_util_error
         EXPORTING
           val = |The app '{ app_start_safe( lv_app_start ) }' | &&

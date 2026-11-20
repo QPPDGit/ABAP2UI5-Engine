@@ -269,8 +269,8 @@ CLASS ltcl_text_default IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         exp = `Error ZFOO 042 (no message text available)`
         act = /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( type = `E`
-                                                               id   = `zfoo`
-                                                               no   = `042` ) ) ).
+                                                               id      = `zfoo`
+                                                               no      = `042` ) ) ).
 
   ENDMETHOD.
 
@@ -301,15 +301,15 @@ CLASS ltcl_text_default IMPLEMENTATION.
     " information without one is dropped like every other empty entry
     cl_abap_unit_assert=>assert_initial(
         /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( type = `W`
-                                                         id   = `ZFOO`
-                                                         no   = `042` ) ) ).
+                                                         id      = `ZFOO`
+                                                         no      = `042` ) ) ).
     cl_abap_unit_assert=>assert_initial(
         /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( type = `S`
-                                                         id   = `ZFOO`
-                                                         no   = `042` ) ) ).
+                                                         id      = `ZFOO`
+                                                         no      = `042` ) ) ).
     cl_abap_unit_assert=>assert_initial(
         /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( id = `ZFOO`
-                                                         no = `042` ) ) ).
+                                                         no    = `042` ) ) ).
 
   ENDMETHOD.
 
@@ -318,12 +318,12 @@ CLASS ltcl_text_default IMPLEMENTATION.
     " A and X are errors too - ui5_get_msg_type decides, not a literal here
     cl_abap_unit_assert=>assert_not_initial(
         /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( type = `A`
-                                                         id   = `ZFOO`
-                                                         no   = `001` ) ) ).
+                                                         id      = `ZFOO`
+                                                         no      = `001` ) ) ).
     cl_abap_unit_assert=>assert_not_initial(
         /sct/au5_cl_ui5_srv_message=>text_default( VALUE #( type = `X`
-                                                         id   = `ZFOO`
-                                                         no   = `001` ) ) ).
+                                                         id      = `ZFOO`
+                                                         no      = `001` ) ) ).
 
   ENDMETHOD.
 
@@ -361,7 +361,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     " for an error box, and gets one that says so instead of no box at all
     DATA lt_ret TYPE ty_t_ret.
 
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                           type    = `error`
                                                           title   = ``
                                                           details = `` ).
@@ -379,7 +379,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     " the type arrives however the app spelled it
     DATA lt_ret TYPE ty_t_ret.
 
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                           type    = `Error`
                                                           title   = ``
                                                           details = `` ).
@@ -396,7 +396,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     " title and details are the app's, also on the standard text
     DATA lt_ret TYPE ty_t_ret.
 
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                           type    = `error`
                                                           title   = `Save`
                                                           details = `Travel 4711` ).
@@ -415,12 +415,12 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     DATA lt_ret TYPE ty_t_ret.
 
     cl_abap_unit_assert=>assert_true(
-        /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+        /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                type    = `information`
                                                title   = ``
                                                details = `` )-skip ).
     cl_abap_unit_assert=>assert_true(
-        /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+        /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                type    = `warning`
                                                title   = ``
                                                details = `` )-skip ).
@@ -433,7 +433,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     " either - and an error box all the same when the app asks for one
     DATA lx TYPE REF TO cx_root.
 
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lx
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = lx
                                                           type    = `error`
                                                           title   = ``
                                                           details = `` ).
@@ -450,7 +450,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
     DATA(lt_ret) = VALUE ty_t_ret( ( type    = `W`
                                      message = `Check the dates` ) ).
 
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = lt_ret
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = lt_ret
                                                           type    = `error`
                                                           title   = ``
                                                           details = `` ).
@@ -468,7 +468,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
 
     " a character value is its own text; information is a plain show( )
     " with the title the type used to bring
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = `Hello`
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = `Hello`
                                                           type    = `Information`
                                                           title   = ``
                                                           details = `` ).
@@ -486,7 +486,7 @@ CLASS ltcl_box_resolve IMPLEMENTATION.
 
     " a type that is no MessageBox display method would be rejected by the
     " whitelisted call - the box falls back to show( ) instead of vanishing
-    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = `Hello`
+    DATA(ls_box) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = `Hello`
                                                           type    = `fancy`
                                                           title   = ``
                                                           details = `` ).

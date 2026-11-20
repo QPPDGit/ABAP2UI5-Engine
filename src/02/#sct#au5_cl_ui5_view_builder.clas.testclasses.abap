@@ -547,8 +547,8 @@ CLASS ltcl_builder IMPLEMENTATION.
     " the builder writes the colon behind the prefix itself - one in the
     " prefix rendered `core::Icon`
     TRY.
-        /sct/au5_cl_ui5_view_builder=>factory( )->ele( n  = `Icon`
-                                                    ns = `core:` ).
+        /sct/au5_cl_ui5_view_builder=>factory( )->ele( n = `Icon`
+                                                    ns   = `core:` ).
         cl_abap_unit_assert=>fail( `a prefix with a colon must raise` ).
       CATCH /sct/au5_cx_ui5_util_error INTO DATA(lx).
         cl_abap_unit_assert=>assert_true( act = xsdbool( lx->get_text( ) CS `namespace prefix` )
@@ -557,8 +557,8 @@ CLASS ltcl_builder IMPLEMENTATION.
 
     " nor may the name bring a prefix of its own beside ns - `core:x:Icon`
     TRY.
-        /sct/au5_cl_ui5_view_builder=>factory( )->ele( n  = `x:Icon`
-                                                    ns = `core` ).
+        /sct/au5_cl_ui5_view_builder=>factory( )->ele( n = `x:Icon`
+                                                    ns   = `core` ).
         cl_abap_unit_assert=>fail( `a prefixed name beside ns must raise` ).
       CATCH /sct/au5_cx_ui5_util_error INTO DATA(lx_name).
         cl_abap_unit_assert=>assert_true( act = xsdbool( lx_name->get_text( ) CS `carries a prefix` )

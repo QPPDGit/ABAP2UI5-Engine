@@ -35,22 +35,6 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `    const ABAP_SOURCE_ORDER = 55;` && |\n| &&
              `    const ABAP_SOURCE_TITLE = "ABAP SOURCE";` && |\n| &&
              `` && |\n| &&
-             `    const SECRET_KEY =` && |\n| &&
-             `      /^[A-Za-z0-9_/-]*(PASSW|PWD|SECRET|TOKEN|CREDENTIAL|APIKEY|API_KEY)[A-Za-z0-9_/-]*$/i;` && |\n| &&
-             `    const MASK = "***";` && |\n| &&
-             `` && |\n| &&
-             `    function redactForExport(text) {` && |\n| &&
-             `      return String(text)` && |\n| &&
-             `        .replace(/^(\s*sap-contextid\s+)(\S.*)$/gim, (_m, lead, value) =>` && |\n| &&
-             `          value === "-" ? lead + value : lead + MASK,` && |\n| &&
-             `        )` && |\n| &&
-             `        .replace(` && |\n| &&
-             `          /"([^"\\]{1,120})"(\s*:\s*)("(?:[^"\\]|\\.)*"|-?\d[\d.eE+-]*)/g,` && |\n| &&
-             `          (match, key, colon) =>` && |\n| &&
-             `            SECRET_KEY.test(key) ? ``"${key}"${colon}"${MASK}"`` : match,` && |\n| &&
-             `        );` && |\n| &&
-             `    }` && |\n| &&
-             `` && |\n| &&
              `    function buildExport(ctx, abapSource) {` && |\n| &&
              `      const sections = [];` && |\n| &&
              `      const push = (title, content) => {` && |\n| &&
@@ -69,7 +53,7 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `        order: tab.exportOrder,` && |\n| &&
              `        title: Tabs.exportTitle(tab),` && |\n| &&
              `` && |\n| &&
-             `        body: redactForExport(Tabs.render(ctx, tab.key)),` && |\n| &&
+             `        body: Tabs.render(ctx, tab.key),` && |\n| &&
              `      }));` && |\n| &&
              `      if (abapSource) {` && |\n| &&
              `        entries.push({` && |\n| &&
@@ -128,11 +112,9 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `        anchor.download = fileName;` && |\n| &&
              `        document.body.appendChild(anchor);` && |\n| &&
              `        anchor.click();` && |\n| &&
+             `        document.body.removeChild(anchor);` && |\n| &&
              `` && |\n| &&
-             `        setTimeout(() => {` && |\n| &&
-             `          URL.revokeObjectURL(url);` && |\n| &&
-             `          anchor.remove();` && |\n| &&
-             `        }, 40000);` && |\n| &&
+             `        setTimeout(() => URL.revokeObjectURL(url), 0);` && |\n| &&
              `      } catch (e) {` && |\n| &&
              `        Lib.logError("DevTools Report: download failed", e);` && |\n| &&
              `      }` && |\n| &&
@@ -174,9 +156,16 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `` && |\n| &&
              `            buttons: [` && |\n| &&
              `              new Button({` && |\n| &&
-             `                text: "Copy",` && |\n| &&
+             `                text: "Copy as Markdown",` && |\n| &&
              `                type: "Emphasized",` && |\n| &&
              `` && |\n| &&
+             `                press: (oEvent) => {` && |\n| &&
+             `                  copyMarkdown(ctx, abapSource, text);` && |\n| &&
+             `                  confirmOnButton(oEvent.getSource());` && |\n| &&
+             `                },` && |\n| &&
+             `              }),` && |\n| &&
+             `              new Button({` && |\n| &&
+             `                text: "Copy as Text",` && |\n| &&
              `                press: (oEvent) => {` && |\n| &&
              `                  Lib.copyToClipboard(text);` && |\n| &&
              `                  confirmOnButton(oEvent.getSource());` && |\n| &&
@@ -208,30 +197,10 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `      );` && |\n| &&
              `    }` && |\n| &&
              `` && |\n| &&
-             `    const ISSUE_FORM = "https://github.com/abap2UI5/abap2UI5/issues/new";` && |\n| &&
-             `    function issueUrl() {` && |\n| &&
-             `      const fields = [` && |\n| &&
-             `        ["template", "bug_report.yml"],` && |\n| &&
-             `        ["context", "Paste the copied report here (Ctrl+V / Cmd+V)."],` && |\n| &&
-             `      ];` && |\n| &&
-             `      const query = fields` && |\n| &&
-             `        .map(([key, value]) => ``${key}=${encodeURIComponent(value)}``)` && |\n| &&
-             `        .join("&");` && |\n| &&
-             `      return ``${ISSUE_FORM}?${query}``;` && |\n| &&
-             `    }` && |\n| &&
-             `` && |\n| &&
-             `    const COPIED =` && |\n| &&
-             `      "Bug report copied as Markdown - paste it into the issue form on GitHub (Additional context).";` && |\n| &&
-             `` && |\n| &&
-             `    async function copyMarkdown(ctx, abapSource) {` && |\n| &&
+             `    function copyMarkdown(ctx, abapSource, plain) {` && |\n| &&
              `      try {` && |\n| &&
-             `        const copied = await Lib.copyToClipboard(` && |\n| &&
-             `          buildMarkdown(ctx, abapSource),` && |\n| &&
-             `        );` && |\n| &&
-             `        if (copied === false) {` && |\n| &&
-             `          return "The browser did not allow the copy - press again.";` && |\n| &&
-             `        }` && |\n| &&
-             `        return COPIED;` && |\n| &&
+             `        Lib.copyToClipboard(buildMarkdown(ctx, abapSource, plain));` && |\n| &&
+             `        return "Bug report copied as Markdown - paste it into a GitHub issue.";` && |\n| &&
              `      } catch (e) {` && |\n| &&
              `        Lib.logError("DevTools Report: markdown export failed", e);` && |\n| &&
              `        return ``Could not build the report: ${e?.message || e}``;` && |\n| &&
@@ -239,13 +208,10 @@ CLASS /sct/au5_cl_ui5f_report_js IMPLEMENTATION.
              `    }` && |\n| &&
              `` && |\n| &&
              `    return {` && |\n| &&
-             `      COPIED,` && |\n| &&
              `      buildExport,` && |\n| &&
              `      buildMarkdown,` && |\n| &&
              `      confirmOnButton,` && |\n| &&
              `      copyMarkdown,` && |\n| &&
-             `      issueUrl,` && |\n| &&
-             `      redactForExport,` && |\n| &&
              `      downloadText,` && |\n| &&
              `      exportFileName,` && |\n| &&
              `      openDialog,` && |\n| &&

@@ -858,7 +858,7 @@ CLASS ltcl_03_errors IMPLEMENTATION.
     cl_abap_unit_assert=>assert_not_initial( result ).
     DATA(lv_xml) = /sct/au5_cl_ui5_util_context=>xml_stringify( mo_cont ).
     /sct/au5_cl_ui5_srv_draft=>get_instance( )->create( draft = mo_cont->ms_draft
-                                           model_xml       = lv_xml ).
+                                           model_xml          = lv_xml ).
 
   ENDMETHOD.
 

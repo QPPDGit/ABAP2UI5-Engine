@@ -36,7 +36,6 @@ CLASS /sct/au5_cl_ui5f_appstate_js IMPLEMENTATION.
              `      oConfig: {},` && |\n| &&
              `      ccResourceRoot: null,` && |\n| &&
              `      cccResourceRoot: null,` && |\n| &&
-             `      endpointPrefix: null,` && |\n| &&
              `      nodePath: null,` && |\n| &&
              `      embedded: false,` && |\n| &&
              `      ownsHash: true,` && |\n| &&
@@ -71,7 +70,6 @@ CLASS /sct/au5_cl_ui5f_appstate_js IMPLEMENTATION.
              `      contextId: null,` && |\n| &&
              `      isBusy: false,` && |\n| &&
              `      oQueuedEvent: null,` && |\n| &&
-             `      oQueuedWindow: null,` && |\n| &&
              `      oSentModel: null,` && |\n| &&
              `      lastRequestBytes: null,` && |\n| &&
              `      lastRoundtripMs: null,` && |\n| &&
@@ -101,8 +99,6 @@ CLASS /sct/au5_cl_ui5f_appstate_js IMPLEMENTATION.
              `      onBeforeRoundtrip: [],` && |\n| &&
              `      onAfterRoundtrip: [],` && |\n| &&
              `      onAfterRendering: [],` && |\n| &&
-             `` && |\n| &&
-             `      onRoundtripEnd: [],` && |\n| &&
              `      onBeforeEventFrontend: [],` && |\n| &&
              `      onErrorDetails: [],` && |\n| &&
              `    };` && |\n| &&
@@ -115,7 +111,6 @@ CLASS /sct/au5_cl_ui5f_appstate_js IMPLEMENTATION.
              `    "oConfig",` && |\n| &&
              `    "ccResourceRoot",` && |\n| &&
              `    "cccResourceRoot",` && |\n| &&
-             `    "endpointPrefix",` && |\n| &&
              `    "nodePath",` && |\n| &&
              `    "embedded",` && |\n| &&
              `    "ownsHash",` && |\n| &&

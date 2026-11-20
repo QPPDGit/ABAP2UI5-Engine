@@ -36,18 +36,11 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `  (Control, Lib, Env, ViewSlots, Context) => {` && |\n| &&
              `    "use strict";` && |\n| &&
              `` && |\n| &&
-             `    const opSymbols = {` && |\n| &&
-             `      EQ: "=",` && |\n| &&
-             `      NE: "!=",` && |\n| &&
-             `      LT: "<",` && |\n| &&
-             `      LE: "<=",` && |\n| &&
-             `      GT: ">",` && |\n| &&
-             `      GE: ">=",` && |\n| &&
-             `    };` && |\n| &&
+             `    const opSymbols = { EQ: "", NE: "!", LT: "<", LE: "<=", GT: ">", GE: ">=" };` && |\n| &&
              `    const filterDisplayFns = {` && |\n| &&
              `      Contains: (v) => ``*${v ?? ""}*``,` && |\n| &&
-             `      StartsWith: (v) => ``${v ?? ""}*``,` && |\n| &&
-             `      EndsWith: (v) => ``*${v ?? ""}``,` && |\n| &&
+             `      StartsWith: (v) => ``^${v ?? ""}``,` && |\n| &&
+             `      EndsWith: (v) => ``${v ?? ""}$``,` && |\n| &&
              `    };` && |\n| &&
              `` && |\n| &&
              `    const UITableExt = Control.extend("sctau5.cc.UITableExt", {` && |\n| &&
@@ -116,7 +109,7 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `        } catch (e) {` && |\n| &&
              `          this._applyPending = false;` && |\n| &&
              `          this._pendingTable = null;` && |\n| &&
-             `          Lib.logError(``UITableExt.applyBackend failed${this._forTable()}``, e);` && |\n| &&
+             `          Lib.logError("UITableExt.applyBackend failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&
@@ -124,12 +117,8 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `        try {` && |\n| &&
              `          this[method](oTable, aValues);` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(``UITableExt.${method} failed${this._forTable()}``, e);` && |\n| &&
+             `          Lib.logError(``UITableExt.${method} failed``, e);` && |\n| &&
              `        }` && |\n| &&
-             `      },` && |\n| &&
-             `` && |\n| &&
-             `      _forTable() {` && |\n| &&
-             `        return `` for tableId '${this.getProperty("tableId")}'``;` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&
              `      _getTable() {` && |\n| &&
@@ -144,7 +133,7 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `` && |\n| &&
              `          this.aFilters = Env.controlFilters(binding);` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(``UITableExt.readFilter failed${this._forTable()}``, e);` && |\n| &&
+             `          Lib.logError("UITableExt.readFilter failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&
@@ -179,7 +168,7 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `            displayFn = (v) => {` && |\n| &&
              `              const from = Lib.toText(v);` && |\n| &&
              `              const to = Lib.toText(oFilter.oValue2);` && |\n| &&
-             `              return ``${from}..${to}``;` && |\n| &&
+             `              return ``${from}...${to}``;` && |\n| &&
              `            };` && |\n| &&
              `          } else if (filterDisplayFns[operator]) {` && |\n| &&
              `            displayFn = filterDisplayFns[operator];` && |\n| &&
@@ -206,7 +195,7 @@ CLASS /sct/au5_cl_ui5f_uitable_js IMPLEMENTATION.
              `` && |\n| &&
              `          this.aSorters = binding ? binding.aSorters : undefined;` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(``UITableExt.readSort failed${this._forTable()}``, e);` && |\n| &&
+             `          Lib.logError("UITableExt.readSort failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&

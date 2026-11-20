@@ -117,7 +117,7 @@ CLASS /sct/au5_cl_ui5_llm IMPLEMENTATION.
 
   METHOD create_claude.
 
-    result = NEW /sct/au5_cl_ui5_llm_claude( model       = model
+    result = NEW /sct/au5_cl_ui5_llm_claude( model    = model
                                           api_key     = api_key
                                           url         = url
                                           destination = destination
@@ -127,7 +127,7 @@ CLASS /sct/au5_cl_ui5_llm IMPLEMENTATION.
 
   METHOD create_openai.
 
-    result = NEW /sct/au5_cl_ui5_llm_openai( model               = model
+    result = NEW /sct/au5_cl_ui5_llm_openai( model            = model
                                           api_key             = api_key
                                           url                 = url
                                           destination         = destination
@@ -139,8 +139,8 @@ CLASS /sct/au5_cl_ui5_llm IMPLEMENTATION.
 
   METHOD create_local.
 
-    result = NEW /sct/au5_cl_ui5_llm_local( t_rule   = t_rule
-                                         fallback = fallback ).
+    result = NEW /sct/au5_cl_ui5_llm_local( t_rule = t_rule
+                                         fallback  = fallback ).
 
   ENDMETHOD.
 

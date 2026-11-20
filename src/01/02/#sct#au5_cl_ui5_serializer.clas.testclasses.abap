@@ -353,7 +353,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " then restore the attributes against the app the parse produced
     result ?= NEW /sct/au5_cl_ui5_serializer( )->/sct/au5_if_ui5_serializer~parse( iv_xml ).
     NEW /sct/au5_cl_ui5_srv_model( attri = result->mt_attri
-                                app   = result->mo_app )->main_attri_db_load( ).
+                                app      = result->mo_app )->main_attri_db_load( ).
 
   ENDMETHOD.
 

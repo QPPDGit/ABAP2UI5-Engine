@@ -678,7 +678,7 @@ CLASS /sct/au5_cl_ui5_http_handler IMPLEMENTATION.
 
     result = NEW #( ).
     result->mo_server = /sct/au5_cl_ui5_util_http=>factory_cloud( req = req
-                                                               res = res ).
+                                                               res    = res ).
 
   ENDMETHOD.
 
@@ -755,7 +755,7 @@ CLASS /sct/au5_cl_ui5_http_handler IMPLEMENTATION.
     DATA(lv_if_none_match) = sv_if_none_match.
     CLEAR sv_if_none_match.
     IF /sct/au5_cl_ui5_util_context=>http_check_etag_match( if_none_match = lv_if_none_match
-                                                         etag          = lv_etag ) = abap_true.
+                                                         etag             = lv_etag ) = abap_true.
       result-status_code   = 304.
       result-status_reason = `Not Modified`.
       RETURN.
@@ -944,7 +944,7 @@ CLASS /sct/au5_cl_ui5_http_handler IMPLEMENTATION.
     DATA(lv_if_none_match) = sv_if_none_match.
     CLEAR sv_if_none_match.
     IF /sct/au5_cl_ui5_util_context=>http_check_etag_match( if_none_match = lv_if_none_match
-                                                         etag          = lv_etag ) = abap_true.
+                                                         etag             = lv_etag ) = abap_true.
       result-status_code   = 304.
       result-status_reason = `Not Modified`.
       RETURN.
@@ -1010,7 +1010,7 @@ CLASS /sct/au5_cl_ui5_http_handler IMPLEMENTATION.
     DATA(lv_if_none_match) = sv_if_none_match.
     CLEAR sv_if_none_match.
     IF /sct/au5_cl_ui5_util_context=>http_check_etag_match( if_none_match = lv_if_none_match
-                                                         etag          = lv_etag ) = abap_true.
+                                                         etag             = lv_etag ) = abap_true.
       result-status_code   = 304.
       result-status_reason = `Not Modified`.
       RETURN.

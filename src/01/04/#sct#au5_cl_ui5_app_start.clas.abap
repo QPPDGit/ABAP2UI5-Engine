@@ -330,7 +330,7 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
         " it by a plain sentence (error_text_for_user)
         DATA(lv_app_intf) = /sct/au5_cl_ui5_util_context=>rtti_get_ref_type_name( li_app_test ).
         IF /sct/au5_cl_ui5_util_context=>rtti_check_class_impl_intf( class = ms_home-classname
-                                                                  intf  = lv_app_intf ) = abap_false.
+                                                                  intf     = lv_app_intf ) = abap_false.
           check_failed( |Class { ms_home-classname } does not exist or does not implement { to_lower( lv_app_intf ) }| ).
           RETURN.
         ENDIF.
@@ -438,14 +438,21 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
 
     DATA(view) = /sct/au5_cl_ui5_view_builder=>factory( ).
 
-    DATA(page) = view->ele( n = `View` ns = `mvc`
-        )->a( n = `xmlns`         v = `sap.m`
-        )->a( n = `xmlns:mvc`     v = `sap.ui.core.mvc`
+    DATA(page) = view->ele( n  = `View`
+                            ns = `mvc`
+        )->a( n = `xmlns`
+              v = `sap.m`
+        )->a( n = `xmlns:mvc`
+              v = `sap.ui.core.mvc`
         " abap2ui5lint-disable-next-line unused-namespace-declaration -- form: is used by the SimpleForm create_layout_form( ) adds, which the linter does not follow
-        )->a( n = `xmlns:form`    v = `sap.ui.layout.form`
-        )->a( n = `xmlns:core`    v = `sap.ui.core`
-        )->a( n = `displayBlock`  v = `true`
-        )->a( n = `height`        v = `100%`
+        )->a( n = `xmlns:form`
+              v = `sap.ui.layout.form`
+        )->a( n = `xmlns:core`
+              v = `sap.ui.core`
+        )->a( n = `displayBlock`
+              v = `true`
+        )->a( n = `height`
+              v = `100%`
 
         )->ele( `Shell`
             )->ele( `Page` ).
@@ -478,8 +485,10 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
 
     bar->ele( `contentLeft`
         )->tag( `Title`
-            )->a( n = `text`   v = `abap2UI5 - Build UI5 Apps Purely in ABAP`
-            )->a( n = `level`  v = `H2` ).
+            )->a( n = `text`
+                  v = `abap2UI5 - Build UI5 Apps Purely in ABAP`
+            )->a( n = `level`
+                  v = `H2` ).
 
     " right: icons only, the way the samples app carries them - the title row
     " is not the place for labels, and what each one does is in its tooltip.
@@ -514,13 +523,20 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     " A Button wraps its icon in button chrome that caps how large it renders;
     " a bare icon takes the size it is given, and 1.125rem is what makes the
     " title row read as icons rather than as shrunken buttons.
-    toolbar->tag( n = `Icon` ns = `core`
-        )->a( n = `src`      v = icon
-        )->a( n = `size`     v = c_icon_size_header
-        )->a( n = `class`    v = `sapUiTinyMarginBeginEnd`
-        )->a( n = `color`    v = c_icon_color
-        )->a( n = `tooltip`  v = tooltip
-        )->a( n = `press`    v = press ).
+    toolbar->tag( n  = `Icon`
+                  ns = `core`
+        )->a( n = `src`
+              v = icon
+        )->a( n = `size`
+              v = c_icon_size_header
+        )->a( n = `class`
+              v = `sapUiTinyMarginBeginEnd`
+        )->a( n = `color`
+              v = c_icon_color
+        )->a( n = `tooltip`
+              v = tooltip
+        )->a( n = `press`
+              v = press ).
 
   ENDMETHOD.
 
@@ -539,8 +555,10 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
                      href    = `https://abap2UI5.org`
                      new_tab = abap_true
         )->tag( `Text`
-            )->a( n = `text`   v = `Guides, tutorials and the Sample reference - from your first app to the full client API`
-            )->a( n = `class`  v = `sapUiSmallMarginBegin` ).
+            )->a( n = `text`
+                  v = `Guides, tutorials and the Sample reference - from your first app to the full client API`
+            )->a( n = `class`
+                  v = `sapUiSmallMarginBegin` ).
 
   ENDMETHOD.
 
@@ -550,35 +568,50 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
                     title = `Quickstart - your first app in 5 steps` ).
 
     form->tag( `Label`
-        )->a( n = `text`  v = `Step 1`
+        )->a( n = `text`
+              v = `Step 1`
         )->tag( `Text`
-            )->a( n = `text`   v = `Create a new class in your ABAP system`
+            )->a( n = `text`
+                  v = `Create a new class in your ABAP system`
         )->tag( `Label`
-            )->a( n = `text`  v = `Step 2`
+            )->a( n = `text`
+                  v = `Step 2`
         )->tag( `Text`
-            )->a( n = `text`   v = `Add the interface /SCT/AU5_IF_APP - that is all it takes`
+            )->a( n = `text`
+                  v = `Add the interface /SCT/AU5_IF_APP - that is all it takes`
         )->tag( `Label`
-            )->a( n = `text`  v = `Step 3`
+            )->a( n = `text`
+                  v = `Step 3`
         )->tag( `Text`
-            )->a( n = `text`   v = `Define the view and implement the behavior - in pure ABAP` ).
+            )->a( n = `text`
+                  v = `Define the view and implement the behavior - in pure ABAP` ).
 
     render_link( form = form
                  text = `See a complete example: Hello World`
                  href = `https://github.com/abap2UI5/abap2UI5/blob/main/src/01/04//sct/au5_cl_ui5_app_hi_world.clas.abap` ).
 
     form->tag( `Label`
-        )->a( n = `text`  v = `Step 4` ).
+        )->a( n = `text`
+              v = `Step 4` ).
 
     IF ms_home-class_editable = abap_true.
       form->tag( `Input`
-          )->a( n = `id`              v = c_id_input
-          )->a( n = `placeholder`     v = `Enter your class name and press 'Check'`
-          )->a( n = `enabled`         v = client->_bind( ms_home-class_editable )
-          )->a( n = `value`           v = client->_bind( ms_home-classname )
-          )->a( n = `valueState`      v = client->_bind( ms_home-class_value_state )
-          )->a( n = `valueStateText`  v = client->_bind( ms_home-class_value_state_text )
-          )->a( n = `submit`          v = client->_event( ms_home-btn_event_id )
-          )->a( n = `width`           v = `70%` ).
+          )->a( n = `id`
+                v = c_id_input
+          )->a( n = `placeholder`
+                v = `Enter your class name and press 'Check'`
+          )->a( n = `enabled`
+                v = client->_bind( ms_home-class_editable )
+          )->a( n = `value`
+                v = client->_bind( ms_home-classname )
+          )->a( n = `valueState`
+                v = client->_bind( ms_home-class_value_state )
+          )->a( n = `valueStateText`
+                v = client->_bind( ms_home-class_value_state_text )
+          )->a( n = `submit`
+                v = client->_event( ms_home-btn_event_id )
+          )->a( n = `width`
+                v = `70%` ).
     ELSE.
       " t, not v: the class name is USER INPUT and the page bootstraps with
       " complex binding syntax, so a `{` in it is read by UI5 as a binding
@@ -591,25 +624,35 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
       " names for a value carrying user input - this was the one v = in the
       " shipped apps that did not carry a literal or a binding
       form->tag( `Text`
-          )->a( n = `text`  t = ms_home-classname ).
+          )->a( n = `text`
+                t = ms_home-classname ).
     ENDIF.
 
     form->tag( `Label` ).
     form->tag( `Button`
-        )->a( n = `press`  v = client->_event( ms_home-btn_event_id )
-        )->a( n = `text`   v = client->_bind( ms_home-btn_text )
-        )->a( n = `icon`   v = client->_bind( ms_home-btn_icon )
-        )->a( n = `width`  v = `70%` ).
+        )->a( n = `press`
+              v = client->_event( ms_home-btn_event_id )
+        )->a( n = `text`
+              v = client->_bind( ms_home-btn_text )
+        )->a( n = `icon`
+              v = client->_bind( ms_home-btn_icon )
+        )->a( n = `width`
+              v = `70%` ).
 
     " not render_link: this one is bound and additionally disabled until the
     " class name was checked
     form->tag( `Label`
-        )->a( n = `text`  v = `Step 5`
+        )->a( n = `text`
+              v = `Step 5`
         )->tag( `Link`
-            )->a( n = `text`     v = `Open your application in a new tab`
-            )->a( n = `target`   v = `_blank`
-            )->a( n = `href`     v = client->_bind( ms_home-url )
-            )->a( n = `enabled`  v = client->_bind( ms_home-link_enabled ) ).
+            )->a( n = `text`
+                  v = `Open your application in a new tab`
+            )->a( n = `target`
+                  v = `_blank`
+            )->a( n = `href`
+                  v = client->_bind( ms_home-url )
+            )->a( n = `enabled`
+                  v = client->_bind( ms_home-link_enabled ) ).
 
     " the five steps are one thought - let it end before the next headline.
     " Four rows, not one: this is the break between doing something and reading
@@ -678,33 +721,44 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
 
     form->tag( `Label` ).
     IF label IS NOT INITIAL.
-      form->a( n = `text`  v = label ).
+      form->a( n = `text`
+               v = label ).
     ENDIF.
 
     result = form->ele( `HBox`
-        )->a( n = `alignItems`  v = `Center`
-        )->a( n = `wrap`        v = `Wrap` ).
+        )->a( n = `alignItems`
+              v = `Center`
+        )->a( n = `wrap`
+              v = `Wrap` ).
 
     " no slot of its own for the icon: every glyph of the icon font renders the
     " same width, so the links line up on the icon alone - a fixed slot only
     " tore a hole between the icon and the name it belongs to
-    result->tag( n = `Icon` ns = `core`
-        )->a( n = `src`    v = icon
-        )->a( n = `color`  v = c_icon_color
-        )->a( n = `class`  v = `sapUiTinyMarginEnd` ).
+    result->tag( n  = `Icon`
+                 ns = `core`
+        )->a( n = `src`
+              v = icon
+        )->a( n = `color`
+              v = c_icon_color
+        )->a( n = `class`
+              v = `sapUiTinyMarginEnd` ).
 
     " t, not v, for the href - see render_quickstart: the sample links are
     " built from the page's own URL (get_app_url), and a browser leaves
     " `{` and `}` in a query or hash unencoded, so a link carrying them
     " was read as a binding and could take the start page's view down
     result->tag( `Link`
-        )->a( n = `text`   v = text
-        )->a( n = `href`   t = href
-        )->a( n = `width`  v = c_link_width ).
+        )->a( n = `text`
+              v = text
+        )->a( n = `href`
+              t = href
+        )->a( n = `width`
+              v = c_link_width ).
 
     " the Link is still the last child, so this attribute lands on it
     IF new_tab = abap_true.
-      result->a( n = `target`  v = `_blank` ).
+      result->a( n = `target`
+                 v = `_blank` ).
     ENDIF.
 
   ENDMETHOD.
@@ -743,21 +797,31 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     " what colours icon and text with it - Success green, Warning orange.
     IF lv_class IS INITIAL.
       row->tag( `ObjectStatus`
-          )->a( n = `text`     v = `not installed`
-          )->a( n = `icon`     v = `sap-icon://download`
-          )->a( n = `state`    v = `Warning`
-          )->a( n = `tooltip`  v = `Not installed on this system - the link opens the repository on GitHub, ready to pull with abapGit` ).
+          )->a( n = `text`
+                v = `not installed`
+          )->a( n = `icon`
+                v = `sap-icon://download`
+          )->a( n = `state`
+                v = `Warning`
+          )->a( n = `tooltip`
+                v = `Not installed on this system - the link opens the repository on GitHub, ready to pull with abapGit` ).
     ELSE.
       row->tag( `ObjectStatus`
-          )->a( n = `text`     v = `installed`
-          )->a( n = `icon`     v = `sap-icon://accept`
-          )->a( n = `state`    v = `Success`
-          )->a( n = `tooltip`  v = `Installed on this system - the link opens its overview app in a new tab` ).
+          )->a( n = `text`
+                v = `installed`
+          )->a( n = `icon`
+                v = `sap-icon://accept`
+          )->a( n = `state`
+                v = `Success`
+          )->a( n = `tooltip`
+                v = `Installed on this system - the link opens its overview app in a new tab` ).
     ENDIF.
 
     row->tag( `Text`
-        )->a( n = `text`   v = descr
-        )->a( n = `class`  v = `sapUiSmallMarginBegin` ).
+        )->a( n = `text`
+              v = descr
+        )->a( n = `class`
+              v = `sapUiSmallMarginBegin` ).
 
   ENDMETHOD.
 
@@ -771,15 +835,21 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     " the popup is opened, which is exactly when somebody asks
     DATA(popup) = /sct/au5_cl_ui5_view_builder=>factory( ).
 
-    DATA(dialog) = popup->ele( n = `FragmentDefinition` ns = `core`
-        )->a( n = `xmlns`       v = `sap.m`
-        )->a( n = `xmlns:core`  v = `sap.ui.core`
+    DATA(dialog) = popup->ele( n  = `FragmentDefinition`
+                               ns = `core`
+        )->a( n = `xmlns`
+              v = `sap.m`
+        )->a( n = `xmlns:core`
+              v = `sap.ui.core`
         " abap2ui5lint-disable-next-line unused-namespace-declaration -- form: is used by the SimpleForm create_layout_form( ) adds, which the linter does not follow
-        )->a( n = `xmlns:form`  v = `sap.ui.layout.form`
+        )->a( n = `xmlns:form`
+              v = `sap.ui.layout.form`
 
         )->ele( `Dialog`
-            )->a( n = `title`       v = `abap2UI5 - System Information`
-            )->a( n = `afterClose`  v = client->_event( c_event_close ) ).
+            )->a( n = `title`
+                  v = `abap2UI5 - System Information`
+            )->a( n = `afterClose`
+                  v = client->_event( c_event_close ) ).
 
     DATA(content) = dialog->ele( `content` ).
 
@@ -790,24 +860,34 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     " is not guessable, and a popup that stayed silent about it would read as
     " if the frontend facts were simply gone
     content->tag( `MessageStrip`
-        )->a( n = `text`      v = `Frontend information - UI5 version, theme, device, requests and logs - is in the developer tools: Ctrl+F12`
-        )->a( n = `type`      v = `Information`
-        )->a( n = `showIcon`  v = `true`
-        )->a( n = `class`     v = `sapUiSmallMarginBeginEnd sapUiTinyMarginTop` ).
+        )->a( n = `text`
+              v = `Frontend information - UI5 version, theme, device, requests and logs - is in the developer tools: Ctrl+F12`
+        )->a( n = `type`
+              v = `Information`
+        )->a( n = `showIcon`
+              v = `true`
+        )->a( n = `class`
+              v = `sapUiSmallMarginBeginEnd sapUiTinyMarginTop` ).
 
     DATA(form) = create_layout_form( content ).
 
     form->tag( `Label`
-        )->a( n = `text`  v = `Launchpad active` ).
+        )->a( n = `text`
+              v = `Launchpad active` ).
     form->tag( `CheckBox`
-        )->a( n = `selected`  b = client->get( )-check_launchpad_active
-        )->a( n = `enabled`   v = `false` ).
+        )->a( n = `selected`
+              b = client->get( )-check_launchpad_active
+        )->a( n = `enabled`
+              v = `false` ).
 
     form->tag( `Label`
-        )->a( n = `text`  v = `ABAP for Cloud` ).
+        )->a( n = `text`
+              v = `ABAP for Cloud` ).
     form->tag( `CheckBox`
-        )->a( n = `selected`  b = /sct/au5_cl_ui5_util_context=>check_abap_cloud( )
-        )->a( n = `enabled`   v = `false` ).
+        )->a( n = `selected`
+              b = /sct/au5_cl_ui5_util_context=>check_abap_cloud( )
+        )->a( n = `enabled`
+              v = `false` ).
     render_text( form  = form
                  label = `User Exit`
                  text  = user_exit_text( ) ).
@@ -823,9 +903,12 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     dialog->ele( `endButton`
 
         )->tag( `Button`
-            )->a( n = `text`   v = `Close`
-            )->a( n = `press`  v = client->_event( c_event_close )
-            )->a( n = `type`   v = `Emphasized` ).
+            )->a( n = `text`
+                  v = `Close`
+            )->a( n = `press`
+                  v = client->_event( c_event_close )
+            )->a( n = `type`
+                  v = `Emphasized` ).
 
     client->popup_display( popup->stringify( ) ).
 
@@ -843,11 +926,14 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     form->ele( `Toolbar`
 
         )->tag( `Title`
-            )->a( n = `text`   v = title
-            )->a( n = `level`  v = `H3`
-            )->a( n = `class`  v = `sapUiSmallMarginBegin sapUiSmallMarginTop sapUiTinyMarginBottom`
+            )->a( n = `text`
+                  v = title
+            )->a( n = `level`
+                  v = `H3`
+            )->a( n = `class`
+                  v = `sapUiSmallMarginBegin sapUiSmallMarginTop sapUiTinyMarginBottom`
 
-    )->end( ).
+      )->end( ).
 
   ENDMETHOD.
 
@@ -862,40 +948,62 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
     form->tag( `Label` ).
 
     form->tag( `Link`
-        )->a( n = `text`    v = text
-        )->a( n = `target`  v = `_blank`
-        )->a( n = `href`    t = href ).
+        )->a( n = `text`
+              v = text
+        )->a( n = `target`
+              v = `_blank`
+        )->a( n = `href`
+              t = href ).
 
   ENDMETHOD.
 
   METHOD render_text.
 
     form->tag( `Label`
-        )->a( n = `text`  v = label
+        )->a( n = `text`
+              v = label
         )->tag( `Text`
-            )->a( n = `text`  t = text ).
+            )->a( n = `text`
+                  t = text ).
 
   ENDMETHOD.
 
   METHOD create_layout_form.
 
-    result = view->ele( n = `SimpleForm` ns = `form`
-        )->a( n = `editable`                 v = `true`
-        )->a( n = `layout`                   v = `ResponsiveGridLayout`
-        )->a( n = `labelSpanXL`              v = `4`
-        )->a( n = `labelSpanL`               v = `3`
-        )->a( n = `labelSpanM`               v = `4`
-        )->a( n = `labelSpanS`               v = `12`
-        )->a( n = `adjustLabelSpan`          v = `false`
-        )->a( n = `emptySpanXL`              v = `0`
-        )->a( n = `emptySpanL`               v = `4`
-        )->a( n = `emptySpanM`               v = `0`
-        )->a( n = `emptySpanS`               v = `0`
-        )->a( n = `columnsXL`                v = `1`
-        )->a( n = `columnsL`                 v = `1`
-        )->a( n = `columnsM`                 v = `1`
-        )->a( n = `singleContainerFullSize`  v = `false`
-        )->ele( n = `content` ns = `form` ).
+    result = view->ele( n  = `SimpleForm`
+                        ns = `form`
+        )->a( n = `editable`
+              v = `true`
+        )->a( n = `layout`
+              v = `ResponsiveGridLayout`
+        )->a( n = `labelSpanXL`
+              v = `4`
+        )->a( n = `labelSpanL`
+              v = `3`
+        )->a( n = `labelSpanM`
+              v = `4`
+        )->a( n = `labelSpanS`
+              v = `12`
+        )->a( n = `adjustLabelSpan`
+              v = `false`
+        )->a( n = `emptySpanXL`
+              v = `0`
+        )->a( n = `emptySpanL`
+              v = `4`
+        )->a( n = `emptySpanM`
+              v = `0`
+        )->a( n = `emptySpanS`
+              v = `0`
+        )->a( n = `columnsXL`
+              v = `1`
+        )->a( n = `columnsL`
+              v = `1`
+        )->a( n = `columnsM`
+              v = `1`
+        )->a( n = `singleContainerFullSize`
+              v = `false`
+        )->ele( n  = `content`
+                ns = `form` ).
 
   ENDMETHOD.
 
@@ -903,10 +1011,10 @@ CLASS /sct/au5_cl_ui5_app_start IMPLEMENTATION.
 
     DATA(ls_config) = client->get( )-s_config.
     result = /sct/au5_cl_ui5_handler=>app_get_url( classname = classname
-                                                origin    = ls_config-origin
-                                                pathname  = ls_config-pathname
-                                                search    = ls_config-search
-                                                hash      = ls_config-hash ).
+                                                origin       = ls_config-origin
+                                                pathname     = ls_config-pathname
+                                                search       = ls_config-search
+                                                hash         = ls_config-hash ).
 
   ENDMETHOD.
 

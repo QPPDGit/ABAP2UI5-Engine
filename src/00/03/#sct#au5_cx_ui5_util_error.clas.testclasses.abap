@@ -129,10 +129,10 @@ CLASS ltcl_unit_test IMPLEMENTATION.
   METHOD test_chain_texts.
 
     DATA(lx_inner) = NEW /sct/au5_cx_ui5_util_error( val = `inner` ).
-    DATA(lx_middle) = NEW /sct/au5_cx_ui5_util_error( val   = `middle`
-                                                previous = lx_inner ).
-    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val   = `outer`
-                                               previous = lx_middle ).
+    DATA(lx_middle) = NEW /sct/au5_cx_ui5_util_error( val = `middle`
+                                                previous  = lx_inner ).
+    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val = `outer`
+                                               previous  = lx_middle ).
 
     DATA(lv_text) = lx_outer->get_text( ).
     DATA(lv_nl) = /sct/au5_cl_ui5_util_context=>cv_char_util_newline.
@@ -148,8 +148,8 @@ CLASS ltcl_unit_test IMPLEMENTATION.
     " as `val`, without a `previous`. Everything below it must survive - it
     " used to be dropped, leaving only the outermost message
     DATA(lx_inner) = NEW /sct/au5_cx_ui5_util_error( val = `root cause` ).
-    DATA(lx_middle) = NEW /sct/au5_cx_ui5_util_error( val   = `middle layer`
-                                                previous = lx_inner ).
+    DATA(lx_middle) = NEW /sct/au5_cx_ui5_util_error( val = `middle layer`
+                                                previous  = lx_inner ).
 
     TRY.
         RAISE EXCEPTION TYPE /sct/au5_cx_ui5_util_error
@@ -168,8 +168,8 @@ CLASS ltcl_unit_test IMPLEMENTATION.
     " a wrapper that only re-raises carries the same text as its cause -
     " it must appear once, not twice
     DATA(lx_inner) = NEW /sct/au5_cx_ui5_util_error( val = `same text` ).
-    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val   = `same text`
-                                               previous = lx_inner ).
+    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val = `same text`
+                                               previous  = lx_inner ).
 
     cl_abap_unit_assert=>assert_equals( exp = `same text`
                                         act = lx_outer->get_text( ) ).
@@ -179,8 +179,8 @@ CLASS ltcl_unit_test IMPLEMENTATION.
   METHOD test_text_full_chain.
 
     DATA(lx_inner) = NEW /sct/au5_cx_ui5_util_error( val = `root cause` ).
-    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val   = `outer problem`
-                                               previous = lx_inner ).
+    DATA(lx_outer) = NEW /sct/au5_cx_ui5_util_error( val = `outer problem`
+                                               previous  = lx_inner ).
 
     DATA(lv_text) = /sct/au5_cx_ui5_util_error=>get_text_full( lx_outer ).
 
@@ -233,8 +233,8 @@ CLASS ltcl_unit_test IMPLEMENTATION.
     DATA(lx) = NEW /sct/au5_cx_ui5_util_error( val = `level 0` ).
 
     DO 30 TIMES.
-      lx = NEW /sct/au5_cx_ui5_util_error( val   = |level { sy-index }|
-                                     previous = lx ).
+      lx = NEW /sct/au5_cx_ui5_util_error( val = |level { sy-index }|
+                                     previous  = lx ).
     ENDDO.
 
     cl_abap_unit_assert=>assert_true(
@@ -263,7 +263,7 @@ CLASS ltcl_unit_test IMPLEMENTATION.
       CATCH cx_root INTO lx_prev ##NO_HANDLER.
     ENDTRY.
 
-    DATA(lx) = NEW /sct/au5_cx_ui5_util_error( val      = lx_val
+    DATA(lx) = NEW /sct/au5_cx_ui5_util_error( val   = lx_val
                                             previous = lx_prev ).
 
     cl_abap_unit_assert=>assert_true( xsdbool( lx->previous = lx_prev ) ).

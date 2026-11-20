@@ -145,10 +145,7 @@ CLASS /sct/au5_cl_ui5f_smartinp_js IMPLEMENTATION.
              `          input.attachTokenUpdate(this._onTokenUpdate);` && |\n| &&
              `          input.attachInnerControlsCreated(this._onInnerControlsCreated);` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(` && |\n| &&
-             `            ``SmartMultiInputExt.setControl: setup failed for multiInputId '${this.getProperty("multiInputId")}'``,` && |\n| &&
-             `            e,` && |\n| &&
-             `          );` && |\n| &&
+             `          Lib.logError("SmartMultiInputExt.setControl: setup failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&

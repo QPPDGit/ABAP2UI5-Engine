@@ -74,7 +74,7 @@ CLASS /sct/au5_cl_ui5f_help_js IMPLEMENTATION.
              `    "                and pressed, what each screen showed. 'Record",` && |\n| &&
              `    "                Journey' starts and stops it, 'Export ABAP Unit'",` && |\n| &&
              `    "                turns it into a local test class that replays the",` && |\n| &&
-             `    "                steps on /sct/au5_cl_frontend_sim (the headless",` && |\n| &&
+             `    "                steps on sctau5_cl_frontend_simulator (the headless",` && |\n| &&
              `    "                frontend, abap2UI5/headless-frontend) - paste it into",` && |\n| &&
              `    "                the app's test include",` && |\n| &&
              `    "",` && |\n| &&
@@ -114,9 +114,8 @@ CLASS /sct/au5_cl_ui5f_help_js IMPLEMENTATION.
              `    "",` && |\n| &&
              `    "Always available",` && |\n| &&
              `    "----------------",` && |\n| &&
-             `    "  Copy View        put the current view's content on the clipboard",` && |\n| &&
+             `    "  Copy             put the current view's content on the clipboard",` && |\n| &&
              `    "  Report a Bug     see below",` && |\n| &&
-             `    "  Export           the whole report as text - read, copy, download",` && |\n| &&
              `    "  (i)              this help",` && |\n| &&
              `    "",` && |\n| &&
              `    "  'Open on Error' (on Overview) pops these tools open on the Log as",` && |\n| &&
@@ -127,12 +126,9 @@ CLASS /sct/au5_cl_ui5f_help_js IMPLEMENTATION.
              `    "  'Report a Bug' puts the whole session state on the clipboard as a",` && |\n| &&
              `    "  GitHub-ready issue body: environment, the error, the log, the",` && |\n| &&
              `    "  roundtrip history and the running app's ABAP class, each in a",` && |\n| &&
-             `    "  collapsed section - and opens the bug report form of the abap2UI5",` && |\n| &&
-             `    "  repository in a new tab. Paste the report into 'Additional context'.",` && |\n| &&
-             `    "  Nothing is sent before you submit that form.",` && |\n| &&
+             `    "  collapsed section. Paste it into an issue as it is.",` && |\n| &&
              `    "",` && |\n| &&
-             `    "  'Export' opens the same content as plain text, for reading, with one",` && |\n| &&
-             `    "  Copy and two downloads. With",` && |\n| &&
+             `    "  'Export' opens the same content for reading, with downloads. With",` && |\n| &&
              `    "  Record Payloads on, Download History (JSON) additionally carries",` && |\n| &&
              `    "  the actual request/response bodies.",` && |\n| &&
              `    "",` && |\n| &&

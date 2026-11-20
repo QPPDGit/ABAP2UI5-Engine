@@ -73,9 +73,7 @@ CLASS /sct/au5_cl_ui5f_format_js IMPLEMENTATION.
              `    DateCreateObject(s) {` && |\n| &&
              `      if (!s) return null;` && |\n| &&
              `      if (ISO_DAY.test(String(s))) return localDay(s);` && |\n| &&
-             `` && |\n| &&
-             `      const date = new Date(s);` && |\n| &&
-             `      return Number.isNaN(date.getTime()) ? null : date;` && |\n| &&
+             `      return new Date(s);` && |\n| &&
              `    },` && |\n| &&
              `    DateAbapDateToDateObject(d) {` && |\n| &&
              `      if (isNoAbapDate(d)) return null;` && |\n| &&

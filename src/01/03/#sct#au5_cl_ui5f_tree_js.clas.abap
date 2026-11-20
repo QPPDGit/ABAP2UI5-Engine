@@ -77,10 +77,7 @@ CLASS /sct/au5_cl_ui5f_tree_js IMPLEMENTATION.
              `            treeStates[id] = binding.getCurrentTreeState();` && |\n| &&
              `          }` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(` && |\n| &&
-             `            ``Tree.setBackend: failed for tree_id '${this.getProperty("tree_id")}'``,` && |\n| &&
-             `            e,` && |\n| &&
-             `          );` && |\n| &&
+             `          Lib.logError("Tree.setBackend: failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&
@@ -117,10 +114,7 @@ CLASS /sct/au5_cl_ui5f_tree_js IMPLEMENTATION.
              `          binding.setTreeState(snapshot);` && |\n| &&
              `          binding.refresh(true);` && |\n| &&
              `        } catch (e) {` && |\n| &&
-             `          Lib.logError(` && |\n| &&
-             `            ``Tree.onAfterRendering: setTreeState failed for tree_id '${this.getProperty("tree_id")}'``,` && |\n| &&
-             `            e,` && |\n| &&
-             `          );` && |\n| &&
+             `          Lib.logError("Tree.onAfterRendering: setTreeState failed", e);` && |\n| &&
              `        }` && |\n| &&
              `      },` && |\n| &&
              `` && |\n| &&

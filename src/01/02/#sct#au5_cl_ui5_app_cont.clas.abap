@@ -301,7 +301,7 @@ CLASS /sct/au5_cl_ui5_app_cont IMPLEMENTATION.
     ENDIF.
 
     /sct/au5_cl_ui5_srv_draft=>get_instance( )->create( draft = ms_draft
-                                           model_xml       = all_xml_stringify( ) ).
+                                           model_xml          = all_xml_stringify( ) ).
 
   ENDMETHOD.
 
@@ -342,7 +342,7 @@ CLASS /sct/au5_cl_ui5_app_cont IMPLEMENTATION.
   METHOD create_model.
 
     result = NEW /sct/au5_cl_ui5_srv_model( attri = mt_attri
-                                         app   = mo_app ).
+                                         app      = mo_app ).
 
   ENDMETHOD.
 ENDCLASS.

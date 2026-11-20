@@ -29,13 +29,13 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `  [` && |\n| &&
              `    "sap/ui/core/mvc/XMLView",` && |\n| &&
              `    "sap/ui/core/Fragment",` && |\n| &&
+             `    "sap/ui/model/json/JSONModel",` && |\n| &&
              `    "sctau5/core/Lib",` && |\n| &&
              `    "sctau5/core/Env",` && |\n| &&
              `    "sctau5/core/ViewSlots",` && |\n| &&
              `    "sctau5/core/Context",` && |\n| &&
-             `    "sctau5/core/WindowModel",` && |\n| &&
              `  ],` && |\n| &&
-             `  (XMLView, Fragment, Lib, Env, ViewSlots, Context, WindowModel) => {` && |\n| &&
+             `  (XMLView, Fragment, JSONModel, Lib, Env, ViewSlots, Context) => {` && |\n| &&
              `    "use strict";` && |\n| &&
              `` && |\n| &&
              `    function applyStoredSizeLimit(ctx, viewKey, oModel) {` && |\n| &&
@@ -79,19 +79,7 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `      slotKey = "MAIN",` && |\n| &&
              `      data = ctx.state.oResponse?.OVIEWMODEL,` && |\n| &&
              `    ) {` && |\n| &&
-             `      const oModel = trackChanges(new WindowModel(dataForSlot(slotKey, data)));` && |\n| &&
-             `` && |\n| &&
-             `      oModel._sctau5WindowSend = (args, noBusy) => {` && |\n| &&
-             `        const oController = ViewSlots.getController(ctx, slotKey);` && |\n| &&
-             `        if (typeof oController?.eB !== "function") {` && |\n| &&
-             `          Lib.logError(``WINDOW: slot ${slotKey} has no controller``);` && |\n| &&
-             `          return;` && |\n| &&
-             `        }` && |\n| &&
-             `        oController.eB(` && |\n| &&
-             `          [WindowModel.EVENT, false, false, false, true, !!noBusy],` && |\n| &&
-             `          ...args,` && |\n| &&
-             `        );` && |\n| &&
-             `      };` && |\n| &&
+             `      const oModel = trackChanges(new JSONModel(dataForSlot(slotKey, data)));` && |\n| &&
              `` && |\n| &&
              `      if (data && data === ctx.state.oResponse?.OVIEWMODEL) {` && |\n| &&
              `        oModel._sctau5BuiltFrom = ctx.state.oResponse;` && |\n| &&
@@ -225,12 +213,6 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `` && |\n| &&
              `    const MAIN_VIEW_ID = "mainView";` && |\n| &&
              `    const MAIN_VIEW_ID_ALT = "mainView2";` && |\n| &&
-             `` && |\n| &&
-             `    function freeMainViewId(ctx, oOld) {` && |\n| &&
-             `      return oOld && oOld.getId() === ViewSlots.ownId(ctx, MAIN_VIEW_ID)` && |\n| &&
-             `        ? MAIN_VIEW_ID_ALT` && |\n| &&
-             `        : MAIN_VIEW_ID;` && |\n| &&
-             `    }` && |\n| &&
              `` && |\n| &&
              `    async function displayView(` && |\n| &&
              `      ctx,` && |\n| &&
@@ -424,8 +406,7 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `` && |\n| &&
              `      oApp.addPage(oView);` && |\n| &&
              `      try {` && |\n| &&
-             `        if (plan.back) {` && |\n|.
-    result = result &&
+             `        if (plan.back) {` && |\n| &&
              `          oApp.to(oOld.getId(), plan.name);` && |\n| &&
              `          oApp.insertPreviousPage(` && |\n| &&
              `            oView.getId(),` && |\n| &&
@@ -443,7 +424,8 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `    }` && |\n| &&
              `` && |\n| &&
              `    async function displayPaged(ctx, xml, mOptions, plan) {` && |\n| &&
-             `      const state = ctx.state;` && |\n| &&
+             `      const state = ctx.state;` && |\n|.
+    result = result &&
              `` && |\n| &&
              `      const oOld = ViewSlots.detach(ctx, "MAIN");` && |\n| &&
              `` && |\n| &&
@@ -453,7 +435,10 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `      ViewSlots.destroy(ctx, "POPUP");` && |\n| &&
              `      ViewSlots.destroy(ctx, "POPOVER");` && |\n| &&
              `      freezePage(oOld);` && |\n| &&
-             `      const localId = freeMainViewId(ctx, oOld);` && |\n| &&
+             `      const localId =` && |\n| &&
+             `        oOld.getId() === ViewSlots.ownId(ctx, MAIN_VIEW_ID)` && |\n| &&
+             `          ? MAIN_VIEW_ID_ALT` && |\n| &&
+             `          : MAIN_VIEW_ID;` && |\n| &&
              `      let bPlaced;` && |\n| &&
              `      try {` && |\n| &&
              `        bPlaced = await displayView(` && |\n| &&
@@ -505,7 +490,10 @@ CLASS /sct/au5_cl_ui5f_slots_js IMPLEMENTATION.
              `` && |\n| &&
              `        ViewSlots.destroy(ctx, "POPUP");` && |\n| &&
              `        ViewSlots.destroy(ctx, "POPOVER");` && |\n| &&
-             `        const localId = freeMainViewId(ctx, oOld);` && |\n| &&
+             `        const localId =` && |\n| &&
+             `          oOld && oOld.getId() === ViewSlots.ownId(ctx, MAIN_VIEW_ID)` && |\n| &&
+             `            ? MAIN_VIEW_ID_ALT` && |\n| &&
+             `            : MAIN_VIEW_ID;` && |\n| &&
              `        let bPlaced;` && |\n| &&
              `        try {` && |\n| &&
              `          bPlaced = await displayView(` && |\n| &&

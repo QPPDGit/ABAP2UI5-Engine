@@ -1163,7 +1163,7 @@ CLASS /sct/au5_cl_ui5_srv_model IMPLEMENTATION.
 
   METHOD attri_srtti_store.
 
-    /sct/au5_cl_ui5_util_context=>xml_srtti_stringify_pair( EXPORTING data    = iv_val
+    /sct/au5_cl_ui5_util_context=>xml_srtti_stringify_pair( EXPORTING data = iv_val
                                                          IMPORTING ev_type = ir_attri->srtti_type
                                                                    ev_data = ir_attri->srtti_data ).
 
@@ -1173,7 +1173,7 @@ CLASS /sct/au5_cl_ui5_srv_model IMPLEMENTATION.
 
     IF is_attri-srtti_type IS NOT INITIAL.
       result = /sct/au5_cl_ui5_util_context=>xml_srtti_parse_pair( iv_type = is_attri-srtti_type
-                                                                iv_data = is_attri-srtti_data ).
+                                                                iv_data    = is_attri-srtti_data ).
     ELSE.
       " one combined document, lexed twice - the format every draft carried
       " until the type travelled on its own
@@ -1644,7 +1644,7 @@ CLASS /sct/au5_cl_ui5_srv_model IMPLEMENTATION.
     ref_idx_put( iv_name = name
                  ir_ref  = lr_ref ).
     DATA(lo_descr) = /sct/au5_cl_ui5_util_context=>rtti_get_typedescr_by_data_ref( lr_ref ).
-    result = VALUE /sct/au5_if_ui5_types=>ty_s_attri( name        = name
+    result = VALUE /sct/au5_if_ui5_types=>ty_s_attri( name     = name
                                                    o_typedescr = lo_descr
                                                    type_name   = lo_descr->absolute_name
                                                    type_kind   = lo_descr->type_kind
@@ -2178,7 +2178,7 @@ CLASS /sct/au5_cl_ui5_srv_model IMPLEMENTATION.
       delta_apply_nodes( EXPORTING io_delta    = io_val_front
                                    iv_base     = lv_delta
                                    iv_table    = iv_name
-                                   it_window   = /sct/au5_cl_ui5_srv_window=>index( tab       = <delta_tab>
+                                   it_window   = /sct/au5_cl_ui5_srv_window=>index( tab    = <delta_tab>
                                                                                   t_sort   = ir_window->t_window_sort
                                                                                   t_filter = ir_window->t_window_filter )
                                    iv_windowed = abap_true
@@ -2757,13 +2757,13 @@ CLASS /sct/au5_cl_ui5_srv_model IMPLEMENTATION.
     ENDIF.
     ASSIGN ir_ref->* TO <tab>.
 
-    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab      = <tab>
+    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab   = <tab>
                                                      t_sort   = ir_attri->t_window_sort
                                                      t_filter = ir_attri->t_window_filter ).
     DATA(lv_count) = nmin( val1 = nmax( val1 = ir_attri->window_count
                                         val2 = ir_attri->window_size )
                            val2 = lines( lt_index ) ).
-    result = /sct/au5_cl_ui5_srv_window=>rows( tab     = <tab>
+    result = /sct/au5_cl_ui5_srv_window=>rows( tab  = <tab>
                                             t_index = lt_index
                                             count   = lv_count ).
 

@@ -26,7 +26,7 @@ CLASS /sct/au5_cl_ui5f_manifest IMPLEMENTATION.
   METHOD get.
 
     result = `{` &&
-             `  "_version": "1.65.0",` &&
+             `  "_version": "2.0.0",` &&
              `  "sap.app": {` &&
              `    "id": "sctau5",` &&
              `    "type": "application",` &&
@@ -42,7 +42,7 @@ CLASS /sct/au5_cl_ui5f_manifest IMPLEMENTATION.
              `    },` &&
              `    "dataSources": {` &&
              `      "http": {` &&
-             `        "uri": "/sap/bc/sctau5",` &&
+             `        "uri": "/sap/bc/http/sap/sctau5",` &&
              `        "type": "JSON"` &&
              `      }` &&
              `    },` &&
@@ -71,7 +71,7 @@ CLASS /sct/au5_cl_ui5f_manifest IMPLEMENTATION.
              `  "sap.ui5": {` &&
              `    "flexEnabled": false,` &&
              `    "dependencies": {` &&
-             `      "minUI5Version": "1.71.0",` &&
+             `      "minUI5Version": "1.136.0",` &&
              `      "libs": {` &&
              `        "sap.m": {},` &&
              `        "sap.ui.core": {}` &&

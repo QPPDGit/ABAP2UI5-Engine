@@ -29,8 +29,8 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD test_create_claude.
 
     " no call - creating a provider reaches no network
-    DATA(li_llm) = /sct/au5_cl_ui5_llm=>create_claude( model   = `test-model`
-                                                    api_key = `test-key` ).
+    DATA(li_llm) = /sct/au5_cl_ui5_llm=>create_claude( model = `test-model`
+                                                    api_key  = `test-key` ).
     cl_abap_unit_assert=>assert_bound( li_llm ).
 
   ENDMETHOD.
@@ -38,7 +38,7 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD test_create_openai.
 
     DATA(li_llm) = /sct/au5_cl_ui5_llm=>create_openai( model = `test-model`
-                                                    url   = `http://localhost:11434/v1/chat/completions` ).
+                                                    url      = `http://localhost:11434/v1/chat/completions` ).
     cl_abap_unit_assert=>assert_bound( li_llm ).
 
   ENDMETHOD.

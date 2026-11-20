@@ -516,7 +516,7 @@ CLASS /sct/au5_cl_ui5f_excel_js IMPLEMENTATION.
              `        this._subscribing = true;` && |\n| &&
              `        excel()` && |\n| &&
              `          .then((Excel) => {` && |\n| &&
-             `            if (!Excel || Lib.isDestroyed(this)) return undefined;` && |\n| &&
+             `            if (!Excel) return undefined;` && |\n| &&
              `            return Excel.run(async (context) => {` && |\n| &&
              `              const handler = context.workbook.onSelectionChanged.add(() =>` && |\n| &&
              `                this._selectionChanged(Excel),` && |\n| &&

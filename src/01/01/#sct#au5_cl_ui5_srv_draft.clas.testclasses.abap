@@ -87,7 +87,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     DATA lo_draft TYPE REF TO /sct/au5_if_ui5_draft_store.
     lo_draft = /sct/au5_cl_ui5_srv_draft=>get_instance( ).
-    DATA(ls_draft) = VALUE /sct/au5_cl_ui5_srv_draft=>ty_s_draft( id                = `TEST_NAV_IDS`
+    DATA(ls_draft) = VALUE /sct/au5_cl_ui5_srv_draft=>ty_s_draft( id             = `TEST_NAV_IDS`
                                                                id_prev           = `NAV_PREV`
                                                                id_prev_app       = `NAV_PREV_APP`
                                                                id_prev_app_stack = `NAV_PREV_APP_STACK` ).

@@ -451,7 +451,7 @@ CLASS /sct/au5_cl_ui5_frontend IMPLEMENTATION.
 
   METHOD msg_box.
 
-    DATA(ls_msg) = /sct/au5_cl_ui5_srv_message=>box_resolve( text    = text
+    DATA(ls_msg) = /sct/au5_cl_ui5_srv_message=>box_resolve( text = text
                                                           type    = type
                                                           title   = title
                                                           details = details ).

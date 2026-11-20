@@ -166,7 +166,7 @@ CLASS /sct/au5_cl_ui5f_dtools_xml IMPLEMENTATION.
              `                <Button` &&
              `                    text="Export ABAP Unit"` &&
              `                    type="Emphasized"` &&
-             `                    tooltip="The recorded journey as a local test class that replays it on /sct/au5_cl_frontend_sim (abap2UI5/headless-frontend)"` &&
+             `                    tooltip="The recorded journey as a local test class that replays it on sctau5_cl_frontend_simulator (abap2UI5/headless-frontend)"` &&
              `                    press=".onExportJourney"` &&
              `                    visible="{/isJourney}"` &&
              `                />` &&
@@ -249,17 +249,6 @@ CLASS /sct/au5_cl_ui5f_dtools_xml IMPLEMENTATION.
              `                visible="{/hasStatusText}"` &&
              `                class="sapUiTinyMarginBottom"` &&
              `            />` &&
-             `            <!-- Report a Bug opens the issue form itself; this is the same` &&
-             `                 address for a browser that refused the new tab. It stays` &&
-             `                 after the status line has gone - the report is still on` &&
-             `                 the clipboard then. -->` &&
-             `            <Link` &&
-             `                text="Open the bug report form on GitHub"` &&
-             `                href="{/issueUrl}"` &&
-             `                target="_blank"` &&
-             `                visible="{/hasIssueLink}"` &&
-             `                class="sapUiTinyMarginBottom"` &&
-             `            />` &&
              `            <!-- A definite height from the viewport, not a percentage: the` &&
              `                 editor sits in a VBox whose height is its content, so a` &&
              `                 percentage resolves to nothing and ACE renders zero rows -` &&
@@ -305,8 +294,8 @@ CLASS /sct/au5_cl_ui5f_dtools_xml IMPLEMENTATION.
              `                press=".onShowHelp"` &&
              `            />` &&
              `            <Button` &&
-             `                text="Copy View"` &&
-             `                tooltip="Put the view that is shown on the clipboard - not the whole report"` &&
+             `                text="Copy"` &&
+             `                tooltip="Put what is shown on the clipboard"` &&
              `                press=".onCopyTab"` &&
              `            />` &&
              `            <!-- The most common reason these tools are opened at all, so` &&
@@ -315,12 +304,12 @@ CLASS /sct/au5_cl_ui5f_dtools_xml IMPLEMENTATION.
              `            <Button` &&
              `                text="Report a Bug"` &&
              `                type="Emphasized"` &&
-             `                tooltip="Copy the whole session state as a GitHub issue body and open the bug report form"` &&
+             `                tooltip="Copy the whole session state as a GitHub issue body"` &&
              `                press=".onReportBug"` &&
              `            />` &&
              `            <Button` &&
              `                text="Export"` &&
-             `                tooltip="Read the whole report as text, copy it or download it"` &&
+             `                tooltip="Read the same report, with downloads"` &&
              `                press=".onExport"` &&
              `            />` &&
              `            <Button` &&

@@ -61,7 +61,7 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD sort_text.
 
     " case-insensitive; Apple and apple keep the order of the table
-    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab    = rows( )
+    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab = rows( )
                                                      t_sort = VALUE #( ( path = `NAME` ) ) ).
     cl_abap_unit_assert=>assert_equals( exp = VALUE /sct/au5_cl_ui5_srv_window=>ty_t_index( ( 2 ) ( 4 ) ( 1 ) ( 3 ) ( 5 ) )
                                         act = lt_index ).
@@ -70,7 +70,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD sort_number_descending.
 
-    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab    = rows( )
+    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab = rows( )
                                                      t_sort = VALUE #( ( path = `PRICE` descending = abap_true ) ) ).
     cl_abap_unit_assert=>assert_equals( exp = VALUE /sct/au5_cl_ui5_srv_window=>ty_t_index( ( 2 ) ( 4 ) ( 5 ) ( 1 ) ( 3 ) )
                                         act = lt_index ).
@@ -80,7 +80,7 @@ CLASS ltcl_test IMPLEMENTATION.
   METHOD sort_stable_two_keys.
 
     " by date, the two rows of 2026-01-05 then by name descending
-    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab    = rows( )
+    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab = rows( )
                                                      t_sort = VALUE #( ( path = `DATE` )
                                                                        ( path = `NAME` descending = abap_true ) ) ).
     cl_abap_unit_assert=>assert_equals( exp = VALUE /sct/au5_cl_ui5_srv_window=>ty_t_index( ( 3 ) ( 5 ) ( 1 ) ( 4 ) ( 2 ) )
@@ -90,7 +90,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD sort_unknown_path.
 
-    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab    = rows( )
+    DATA(lt_index) = /sct/au5_cl_ui5_srv_window=>index( tab = rows( )
                                                      t_sort = VALUE #( ( path = `NOPE` ) ) ).
     cl_abap_unit_assert=>assert_equals( exp = VALUE /sct/au5_cl_ui5_srv_window=>ty_t_index( ( 1 ) ( 2 ) ( 3 ) ( 4 ) ( 5 ) )
                                         act = lt_index ).
@@ -202,7 +202,7 @@ CLASS ltcl_test IMPLEMENTATION.
     FIELD-SYMBOLS <result> TYPE ty_t_row.
 
     DATA(lt_rows) = rows( ).
-    DATA(lr_rows) = /sct/au5_cl_ui5_srv_window=>rows( tab     = lt_rows
+    DATA(lr_rows) = /sct/au5_cl_ui5_srv_window=>rows( tab  = lt_rows
                                                    t_index = VALUE #( ( 4 ) ( 2 ) ( 5 ) )
                                                    count   = 2 ).
     ASSIGN lr_rows->* TO <result>.
@@ -269,7 +269,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     " fewer than one window is one window
     /sct/au5_cl_ui5_srv_window=>event_apply( t_arg = VALUE #( ( `/MT_ROWS` ) ( `3` ) )
-                                          attri = lr_attri ).
+                                          attri    = lr_attri ).
     ls_attri = lr_attri->*[ name = `MT_ROWS` ].
     cl_abap_unit_assert=>assert_equals( exp = 50
                                         act = ls_attri-window_count ).
@@ -280,7 +280,7 @@ CLASS ltcl_test IMPLEMENTATION.
     " which runs outside every TRY, as a 500
     LOOP AT VALUE string_table( ( `1 0` ) ( `99999999999` ) ( `-5` ) ( `abc` ) ( ` ` ) ) INTO DATA(lv_count).
       /sct/au5_cl_ui5_srv_window=>event_apply( t_arg = VALUE #( ( `/MT_ROWS` ) ( lv_count ) )
-                                            attri = lr_attri ).
+                                            attri    = lr_attri ).
       ls_attri = lr_attri->*[ name = `MT_ROWS` ].
       cl_abap_unit_assert=>assert_equals( exp = 50
                                           act = ls_attri-window_count
@@ -289,7 +289,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     " surrounding blanks are not part of the number
     /sct/au5_cl_ui5_srv_window=>event_apply( t_arg = VALUE #( ( `/MT_ROWS` ) ( ` 200 ` ) )
-                                          attri = lr_attri ).
+                                          attri    = lr_attri ).
     ls_attri = lr_attri->*[ name = `MT_ROWS` ].
     cl_abap_unit_assert=>assert_equals( exp = 200
                                         act = ls_attri-window_count ).
@@ -305,7 +305,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     " a table that is not windowed is not touched
     cl_abap_unit_assert=>assert_false( /sct/au5_cl_ui5_srv_window=>event_apply( t_arg = VALUE #( ( `/MV_X` ) ( `100` ) )
-                                                                             attri = lr_attri ) ).
+                                                                             attri    = lr_attri ) ).
 
   ENDMETHOD.
 

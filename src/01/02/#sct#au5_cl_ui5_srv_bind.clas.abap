@@ -409,7 +409,7 @@ CLASS /sct/au5_cl_ui5_srv_bind IMPLEMENTATION.
 
     IF mo_model IS NOT BOUND.
       mo_model = NEW /sct/au5_cl_ui5_srv_model( attri = mo_app->mt_attri
-                                             app   = mo_app->mo_app ).
+                                             app      = mo_app->mo_app ).
     ENDIF.
     result = mo_model.
 
@@ -642,7 +642,7 @@ CLASS /sct/au5_cl_ui5_srv_bind IMPLEMENTATION.
        OR lines( <tab> )   <> mv_window_lines
        OR mt_window_sort   <> lr_attri->t_window_sort
        OR mt_window_filter <> lr_attri->t_window_filter.
-      mt_window_index  = /sct/au5_cl_ui5_srv_window=>index( tab      = <tab>
+      mt_window_index  = /sct/au5_cl_ui5_srv_window=>index( tab   = <tab>
                                                          t_sort   = lr_attri->t_window_sort
                                                          t_filter = lr_attri->t_window_filter ).
       mr_window_tab    = val.

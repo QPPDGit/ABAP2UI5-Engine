@@ -225,7 +225,7 @@ CLASS /sct/au5_cl_ui5f_router_js IMPLEMENTATION.
              `      const appHash = appHashNormalized(sNewHash);` && |\n| &&
              `      if (appHash === state.appHash) return;` && |\n| &&
              `      const controller = state.oController;` && |\n| &&
-             `      if (!Lib.isControllerAlive(controller)) return;` && |\n| &&
+             `      if (!controller || !Lib.isControllerAlive(controller)) return;` && |\n| &&
              `` && |\n| &&
              `      if (state.isBusy) {` && |\n| &&
              `        state.pendingAppHash = sNewHash;` && |\n| &&
@@ -239,7 +239,7 @@ CLASS /sct/au5_cl_ui5f_router_js IMPLEMENTATION.
              `    function dispatchPendingAppHash(ctx) {` && |\n| &&
              `      const state = ctx.state;` && |\n| &&
              `      const pending = state.pendingAppHash;` && |\n| &&
-             `      if (pending == null) return;` && |\n| &&
+             `      if (pending === null || pending === undefined) return;` && |\n| &&
              `      state.pendingAppHash = null;` && |\n| &&
              `      dispatchAppHashChange(ctx, pending);` && |\n| &&
              `    }` && |\n| &&
